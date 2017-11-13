@@ -81,15 +81,17 @@ class NeuronalNetwork:
         netto_input = 0
         for i in range(len(weightCol)):
             netto_input += weightCol[i] * self.neurons[i]
-
+            
+        print("Netto Input : %s" % (netto_input));
         return netto_input
 
     def __fnc_activate(self, index):
         """
         Activation function
         """
-        return self.__fnc_propagate(index)
-
+        neuronAktivierung = (1/(1+np.exp(-self.__fnc_propagate(index))));
+        print("Neuron Aktivierung : %s"%(neuronAktivierung));
+        return neuronAktivierung;
     def __fnc_output(self, index):
         """
         Output function.
