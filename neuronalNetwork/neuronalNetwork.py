@@ -11,18 +11,24 @@ class NeuronalNetwork:
         :param layers: Array containing the number of hidden layers and the number of neurons in each layer
         """
 
+        # Misc attributes
         self.numLayers = len(layers)
         self.numNeurons = sum(layers)
 
+        # Set the functions to default values if no other values are provided
         self.fnc_propagate_type = "netto_input" if fnc_propagate_type is None else fnc_propagate_type
         self.fnc_activate_type = "identity" if fnc_activate_type is None else fnc_activate_type
         self.fnc_output_type = "identity" if fnc_output_type is None else fnc_output_type
 
         # Use defined weight matrix if given else init random weight matrix
-        self._weightMatrix = np.random.rand(self.numNeurons, self.numNeurons) if weight_matrix is None else weight_matrix
+        self._weightMatrix = np.random.uniform(low=-1, high=1, size=(self.numNeurons, self.numNeurons)) if weight_matrix is None else weight_matrix
 
-        self.inputNeurons = []
-        self.outputNeurons = []
+        self.inputValues = []
+        self.targetValues = []
+
+        # Array which has the current output of each neuron
+        self.neurons = np.zeros(self.numNeurons)
+
 
     @property
     def weight_matrix(self):
@@ -32,52 +38,62 @@ class NeuronalNetwork:
     def weight_matrix(self, value):
         self._weightMatrix = value
 
-
-
-    def train(self):
+    def train(self, trainingData):
         """
         Trains the network with the given training data.
         """
 
-        pass
+        for i in range(len(trainingData)):
 
-    def test(self):
+            inputVector = trainingData[i]["input"]
+            outputVector = trainingData[i]["output"]
+
+            # Set input pattern to neurons in first layer
+            for j in range(len(inputVector)):
+                self.neurons[j] = inputVector[j]
+
+            # Calculate output for the other neurons
+            for k in range(len(inputVector), self.numNeurons):
+                self.neurons[k] = self.__fnc_output(k)
+
+            print("%s | %s" % (inputVector, self.neurons[-2:]))
+
+    def test(self, testData):
         """
         Tests the network with the given test data.
         """
         pass
 
-
     def __backpropagation(self):
-
         """
         Backpropagation method.
         """
 
         pass
 
-    def __fnc_propagate(self):
-
+    def __fnc_propagate(self, index):
         """
         Propagation function
         """
 
-        pass
+        weightCol = self._weightMatrix[:, index]
 
-    def __fnc_activate(self):
+        netto_input = 0
+        for i in range(len(weightCol)):
+            netto_input += weightCol[i] * self.neurons[i]
 
+        return netto_input
+
+    def __fnc_activate(self, index):
         """
         Activation function
         """
+        return self.__fnc_propagate(index)
 
-        pass
-
-    def __fnc_output(self):
-
+    def __fnc_output(self, index):
         """
         Output function.
         """
-
-        pass
+        return self.__fnc_activate(index)
 
 
