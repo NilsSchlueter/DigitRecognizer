@@ -14,6 +14,9 @@ class NeuronalNetwork:
         # Misc attributes
         self.numLayers = len(layers)
         self.numNeurons = sum(layers)
+        self.numInputNeurons = layers[0];
+        self.numOutputNeurons = layers[self.numLayers-1];
+        self.numHiddenNeurons = self.numOutputNeurons - self.numInputNeurons
 
         # Set the functions to default values if no other values are provided
         self.fnc_propagate_type = "netto_input" if fnc_propagate_type is None else fnc_propagate_type
@@ -55,8 +58,21 @@ class NeuronalNetwork:
             # Calculate output for the other neurons
             for k in range(len(inputVector), self.numNeurons):
                 self.neurons[k] = self.__fnc_output(k)
-
-            print("%s | %s" % (inputVector, self.neurons[-2:]))
+                
+            print("%s | %s" % (inputVector, self.neurons[-self.numOutputNeurons:]))
+            error = 0
+            for l in range(self.numOutputNeurons):
+                error += self.__calculateError(outputVector[l],self.neurons[self.numHiddenNeurons+l])
+            print("Error : %s" %(error))
+            
+    def __calculateError(self,target,output):
+        """
+        Calculate the Error of the Network
+        """
+        error = 1/2*(pow(target-output,2)) 
+        return error     
+    
+        pass
 
     def test(self, testData):
         """

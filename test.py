@@ -13,7 +13,36 @@ testNN = NeuronalNetwork([4, 2, 2],
                                  [0,0, 0, 0, 0, 0, 0, 0]]))
 trainingData = [
     {"input": [0.05, 0.1, 1, 1],
-     "output": [0, 0]}]
+     "output": [0.01, 0.99]}]
 
 testNN.train(trainingData)
+"""
+testNN2 = NeuronalNetwork([3,1],
+                           np.array([
+                                [0, 0, 0, 0.6],
+                                [0, 0, 0, 0.6],
+                                [0, 0, 0, 0.6],
+                                [0, 0, 0, 0]]))
+                           
+trainingData2 = [
+    {"input": [1, 1, 1],
+     "output": 1},
+    {"input": [1, 1, 0],
+     "output": 1},
+    {"input": [1, 0, 1],
+     "output": 1},
+    {"input": [0, 1, 1],
+     "output": 1},
+    {"input": [1, 0, 0],
+     "output": 0},
+    {"input": [0, 1, 0],
+     "output": 0},
+    {"input": [0, 0, 1],
+     "output": 0},
+    {"input": [0, 0, 0],
+     "output": 0},
+]
+    
+testNN2.train(trainingData2);
 
+"""
