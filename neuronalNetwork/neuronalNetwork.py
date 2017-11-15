@@ -16,7 +16,7 @@ class NeuronalNetwork:
         self.numNeurons = sum(layers)
         self.numInputNeurons = layers[0];
         self.numOutputNeurons = layers[self.numLayers-1];
-        self.numHiddenNeurons = self.numOutputNeurons - self.numInputNeurons
+        self.numHiddenNeurons = layers[1]
         self.learnRate = learnRate;
 
         # Set the functions to default values if no other values are provided
@@ -47,9 +47,11 @@ class NeuronalNetwork:
         """
         Trains the network with the given training data.
         """
+        new_weightMatrix = np.zeros(shape=(self.numNeurons,self.numNeurons))
 
         for i in range(len(trainingData)):
 
+            
             inputVector = trainingData[i]["input"]
             outputVector = trainingData[i]["output"]
 
@@ -61,24 +63,57 @@ class NeuronalNetwork:
             for k in range(len(inputVector), self.numNeurons):
                 self.neurons[k] = self.__fnc_output(k)
                 
-            print("%s | %s" % (inputVector, self.neurons[-self.numOutputNeurons:]))
+            #print("%s | %s" % (inputVector, self.neurons[-self.numOutputNeurons:]))
            
-           #Backpropagation for Output Layer
+            #Backpropagation for Output Layer
             for l in range(self.numOutputNeurons):
                 activationIndex = self.numNeurons-l-1
                 #Delta Calculation
+                error = 0;
                 error= self.__calculateError(outputVector[self.numOutputNeurons-l-1],self.neurons[activationIndex])
                 derivativeValue = self.__derivativeActivation(self.neurons[activationIndex])
-                print ("Output:%s Delta:  %s*%s"%(self.neurons[activationIndex],error,derivativeValue))
                 self.delta[activationIndex] = error * derivativeValue
                 
                 #Weight Adjustment
                 weightCol = self._weightMatrix[:, activationIndex]
                 for i in range(len(weightCol)):
                     if(weightCol[i]!=0):
-                        print("%s - %s * %s * %s"%(weightCol[i] , self.learnRate ,self.delta[activationIndex] ,self.neurons[i]))
-                        weightCol[i]= weightCol[i] - self.learnRate * self.delta[activationIndex] * self.neurons[i]
-                        print("Ergebnis : %s" %(weightCol[i]))
+                        #print("%s - %s * %s * %s"%(weightCol[i] , self.learnRate ,self.delta[activationIndex] ,self.neurons[i]))
+                        new_weightMatrix[i][activationIndex]= weightCol[i] - self.learnRate * self.delta[activationIndex] * self.neurons[i]
+                       
+                        
+            print(self.delta)
+            print(self.weight_matrix)
+            print(new_weightMatrix)
+                        
+            #Backpropagation for Hidden Layer
+            for m in range(self.numHiddenNeurons):
+                activationIndex = self.numInputNeurons+m
+                #Sum Error of Layer before
+                error = 0;
+                weightRow = self._weightMatrix[ activationIndex,:]
+                for n in range(len(weightRow)):
+                    if(weightRow[n]!=0):
+                        error += self.delta[n]*weightRow[n]
+                        print(weightRow);
+                        
+                print("BackpropagationError : %s"%(error))
+                derivativeValue = self.__derivativeActivation(self.neurons[activationIndex])
+                self.delta[activationIndex] = error * derivativeValue
+                        
+                #Weight Adjustment
+                weightCol = self._weightMatrix[:, activationIndex]
+                for i in range(len(weightCol)):
+                    if(weightCol[i]!=0):
+                        #print("%s - %s * %s * %s"%(weightCol[i] , self.learnRate ,self.delta[activationIndex] ,self.neurons[i]))
+                        new_weightMatrix[i][activationIndex]= weightCol[i] - self.learnRate * self.delta[activationIndex] * self.neurons[i]
+                        #print("Ergebnis : %s" %(weightCol[i]))
+                        
+                print(new_weightMatrix)
+                        
+                        
+                
+                
                         
             
     def __calculateError(self,target,output):
