@@ -31,6 +31,7 @@ class NeuronalNetwork:
 
         # Array which has the current output of each neuron
         self.neurons = np.zeros(self.numNeurons)
+        self.delta = np.zeros(self.numNeurons)
 
 
     @property
@@ -60,19 +61,29 @@ class NeuronalNetwork:
                 self.neurons[k] = self.__fnc_output(k)
                 
             print("%s | %s" % (inputVector, self.neurons[-self.numOutputNeurons:]))
-            error = 0
+           
+           #Backpropagation for Output Layer
             for l in range(self.numOutputNeurons):
-                error += self.__calculateError(outputVector[l],self.neurons[self.numHiddenNeurons+l])
-            print("Error : %s" %(error))
+                activationIndex = self.numNeurons-l-1
+                error= self.__calculateError(outputVector[self.numOutputNeurons-l-1],self.neurons[activationIndex])
+                derivativeValue = self.__derivativeActivation(self.neurons[activationIndex])
+                print ("Output:%s Delta:  %s*%s"%(self.neurons[activationIndex],error,derivativeValue))
+                self.delta[activationIndex] = error * derivativeValue 
+            print("Error : %s" %(self.delta))
             
     def __calculateError(self,target,output):
         """
         Calculate the Error of the Network
         """
-        error = 1/2*(pow(target-output,2)) 
+        error = output-target 
         return error     
     
-        pass
+    
+    def __derivativeActivation(self,output):
+        """
+        derivative of the Activation Function
+        """
+        return output*(1-output)        
 
     def test(self, testData):
         """
