@@ -3,7 +3,7 @@ import numpy as np
 
 class NeuronalNetwork:
 
-    def __init__(self, layers, weight_matrix=None, fnc_propagate_type=None, fnc_activate_type=None, fnc_output_type=None):
+    def __init__(self, layers, weight_matrix=None, fnc_propagate_type=None, fnc_activate_type=None, fnc_output_type=None,learnRate=0.5):
 
         """
         Inits a new Neuronal Network.
@@ -17,6 +17,7 @@ class NeuronalNetwork:
         self.numInputNeurons = layers[0];
         self.numOutputNeurons = layers[self.numLayers-1];
         self.numHiddenNeurons = self.numOutputNeurons - self.numInputNeurons
+        self.learnRate = learnRate;
 
         # Set the functions to default values if no other values are provided
         self.fnc_propagate_type = "netto_input" if fnc_propagate_type is None else fnc_propagate_type
@@ -65,11 +66,20 @@ class NeuronalNetwork:
            #Backpropagation for Output Layer
             for l in range(self.numOutputNeurons):
                 activationIndex = self.numNeurons-l-1
+                #Delta Calculation
                 error= self.__calculateError(outputVector[self.numOutputNeurons-l-1],self.neurons[activationIndex])
                 derivativeValue = self.__derivativeActivation(self.neurons[activationIndex])
                 print ("Output:%s Delta:  %s*%s"%(self.neurons[activationIndex],error,derivativeValue))
-                self.delta[activationIndex] = error * derivativeValue 
-            print("Error : %s" %(self.delta))
+                self.delta[activationIndex] = error * derivativeValue
+                
+                #Weight Adjustment
+                weightCol = self._weightMatrix[:, activationIndex]
+                for i in range(len(weightCol)):
+                    if(weightCol[i]!=0):
+                        print("%s - %s * %s * %s"%(weightCol[i] , self.learnRate ,self.delta[activationIndex] ,self.neurons[i]))
+                        weightCol[i]= weightCol[i] - self.learnRate * self.delta[activationIndex] * self.neurons[i]
+                        print("Ergebnis : %s" %(weightCol[i]))
+                        
             
     def __calculateError(self,target,output):
         """
