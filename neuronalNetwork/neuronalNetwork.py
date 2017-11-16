@@ -50,8 +50,9 @@ class NeuronalNetwork:
         new_weightMatrix = np.zeros(shape=(self.numNeurons,self.numNeurons))
 
         for i in range(len(trainingData)):
-
-            
+            random =np.random.randint(len(trainingData), size=(1))
+            i=random[0]
+            sumerror =0
             inputVector = trainingData[i]["input"]
             outputVector = trainingData[i]["output"]
 
@@ -71,8 +72,10 @@ class NeuronalNetwork:
                 #Delta Calculation
                 error = 0;
                 error= self.__calculateError(outputVector[self.numOutputNeurons-l-1],self.neurons[activationIndex])
+                sumerror +=error;
                 derivativeValue = self.__derivativeActivation(self.neurons[activationIndex])
                 self.delta[activationIndex] = error * derivativeValue
+                #print("Error : %s"%(error))
                 
                 #Weight Adjustment
                 weightCol = self._weightMatrix[:, activationIndex]
@@ -82,35 +85,38 @@ class NeuronalNetwork:
                         new_weightMatrix[i][activationIndex]= weightCol[i] - self.learnRate * self.delta[activationIndex] * self.neurons[i]
                        
                         
-            print(self.delta)
-            print(self.weight_matrix)
-            print(new_weightMatrix)
+            #print(self.delta)
+            #print(self.weight_matrix)
+            #print(new_weightMatrix)
                         
             #Backpropagation for Hidden Layer
             for m in range(self.numHiddenNeurons):
                 activationIndex = self.numInputNeurons+m
+                #print(activationIndex)
                 #Sum Error of Layer before
                 error = 0;
                 weightRow = self._weightMatrix[ activationIndex,:]
                 for n in range(len(weightRow)):
                     if(weightRow[n]!=0):
                         error += self.delta[n]*weightRow[n]
-                        print(weightRow);
+                        #print(weightRow);
                         
-                print("BackpropagationError : %s"%(error))
+                #print("BackpropagationError : %s"%(error))
                 derivativeValue = self.__derivativeActivation(self.neurons[activationIndex])
                 self.delta[activationIndex] = error * derivativeValue
                         
                 #Weight Adjustment
                 weightCol = self._weightMatrix[:, activationIndex]
-                for i in range(len(weightCol)):
-                    if(weightCol[i]!=0):
+                
+                for o in range(len(weightCol)):
+                    if(weightCol[o]!=0):
                         #print("%s - %s * %s * %s"%(weightCol[i] , self.learnRate ,self.delta[activationIndex] ,self.neurons[i]))
-                        new_weightMatrix[i][activationIndex]= weightCol[i] - self.learnRate * self.delta[activationIndex] * self.neurons[i]
+                        new_weightMatrix[o][activationIndex]= weightCol[o] - self.learnRate * self.delta[activationIndex] * self.neurons[o]
                         #print("Ergebnis : %s" %(weightCol[i]))
                         
-                print(new_weightMatrix)
-                        
+                #print(new_weightMatrix)
+            self.weight_matrix = new_weightMatrix; 
+            return sumerror;
                         
                 
                 
@@ -134,6 +140,23 @@ class NeuronalNetwork:
         """
         Tests the network with the given test data.
         """
+        for i in range(len(testData)):
+
+            sumerror =0
+            inputVector = testData[i]["input"]
+            outputVector = testData[i]["output"]
+
+            # Set input pattern to neurons in first layer
+            for j in range(len(inputVector)):
+                self.neurons[j] = inputVector[j]
+
+            # Calculate output for the other neurons
+            for k in range(len(inputVector), self.numNeurons):
+                self.neurons[k] = self.__fnc_output(k)
+            for l in range(self.numOutputNeurons):
+                outnumber = self.numNeurons - l -1;
+                print("Output : %s Target : %s"%(self.neurons[outnumber],outputVector[self.numOutputNeurons-l-1]));
+                
         pass
 
     def __backpropagation(self):
@@ -154,7 +177,7 @@ class NeuronalNetwork:
         for i in range(len(weightCol)):
             netto_input += weightCol[i] * self.neurons[i]
             
-        print("Netto Input : %s" % (netto_input));
+        #print("Netto Input : %s" % (netto_input));
         return netto_input
 
     def __fnc_activate(self, index):
@@ -162,7 +185,7 @@ class NeuronalNetwork:
         Activation function
         """
         neuronAktivierung = (1/(1+np.exp(-self.__fnc_propagate(index))));
-        print("Neuron Aktivierung : %s"%(neuronAktivierung));
+        #print("Neuron Aktivierung : %s"%(neuronAktivierung));
         return neuronAktivierung;
     def __fnc_output(self, index):
         """
