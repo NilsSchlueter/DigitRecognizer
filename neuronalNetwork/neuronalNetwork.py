@@ -26,6 +26,11 @@ class NeuronalNetwork:
 
         # Use defined weight matrix if given else init random weight matrix
         self._weightMatrix = np.random.uniform(low=-1, high=1, size=(self.numNeurons, self.numNeurons)) if weight_matrix is None else weight_matrix
+        for i in range(self.numNeurons):
+            for j in range(self.numNeurons):
+                if(self.weight_matrix[i][j] !=0):
+                    randNum = np.random.uniform(low=-1, high=1, size=(1));
+                    self.weight_matrix[i][j] = randNum[0]
 
         self.inputValues = []
         self.targetValues = []

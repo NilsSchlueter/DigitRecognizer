@@ -20,7 +20,7 @@ trainingData = [
 
 #testNN.train(trainingData)
 
-print("Network 2")
+print("Start Learning")
 
 testNN2 = NeuronalNetwork([2,3,1],
                            np.array([
@@ -59,10 +59,10 @@ testData2 = [
 error = 1
 
 x=0
-while(x <500000):
+while(x <10000):
     error = testNN2.train(trainingData2);
     x+=1
-    print(error)
+    #print(error)
 
 
 testNN2.test(trainingData2);
