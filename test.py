@@ -19,14 +19,14 @@ trainingData = [
 
 print("Start Learning")
 testNN2 = NeuronalNetwork([2, 3, 1],
-                           np.array([
+                          np.array([
                                 [0, 0, 0.8, 0.4, 0.3, 0],
                                 [0, 0, 0.2, 0.9, 0.5, 0],
                                 [0, 0, 0, 0, 0, 0.3],
                                 [0, 0, 0, 0, 0, 0.5],
                                 [0, 0, 0, 0, 0, 0.9],
                                 [0, 0, 0, 0, 0, 0]]),
-                          learnRate=0.01,
+                          learn_rate=0.01,
                           fnc_activate_type="identity")
                            
 trainingData2 = [
@@ -37,9 +37,7 @@ trainingData2 = [
     {"input": [1, 0],
      "output": [2]},
     {"input": [0, 0],
-     "output": [0]},
- 
-]
+     "output": [0]}]
     
 testData2 = [
       {"input": [1, 1],
