@@ -14,6 +14,11 @@ class CSVImporter:
             next(read_csv, None)  # Skip header
 
             for row in read_csv:
+                for i in range(len(row)):
+                    if(int(row[i])>0):
+                        row[i]= 1 
+                    else:
+                        row[i]=0
                 cur_data = {
                     "input": row[1:],
                     "output": self.__transform_to_binary(row[0])

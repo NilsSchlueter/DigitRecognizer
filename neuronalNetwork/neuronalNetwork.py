@@ -31,8 +31,26 @@ class NeuronalNetwork:
         self.fnc_activate_type = "identity" if fnc_activate_type is None else fnc_activate_type
         self.fnc_output_type = "identity" if fnc_output_type is None else fnc_output_type
 
-        # Use defined weight matrix if given else init random weight matrix
-        self.weight_matrix = np.random.uniform(low=-1, high=1, size=(self.numNeurons, self.numNeurons)) if weight_matrix is None else weight_matrix
+        # RandomMatrix with everything
+        #self.weight_matrix = np.random.uniform(low=-0.5, high=0.5, size=(self.numNeurons, self.numNeurons)) if weight_matrix is None else weight_matrix
+        
+        # RandomMatrix FeedForward
+        self.weight_matrix = np.zeros(shape=(self.numNeurons,self.numNeurons))
+        for i in range(self.numInputNeurons):
+            for j in range(self.numHiddenNeurons):
+                hiddenIdx = j + self.numInputNeurons
+                rng = np.random.uniform(low=-0.5, high=0.5, size=(1)) 
+                self.weight_matrix[i][hiddenIdx] = rng[0]
+        for i in range(self.numHiddenNeurons):
+            hiddenIdx = i + self.numInputNeurons
+            for j in range(self.numOutputNeurons):
+                outIdx = j + self.numInputNeurons + self.numHiddenNeurons
+                rng = np.random.uniform(low=-0.5, high=0.5, size=(1)) 
+                self.weight_matrix[hiddenIdx][outIdx] = rng[0]
+                
+        print(self.weight_matrix)
+            
+            
 
         # If self.weight_matrix changes, self._tempWeightMatrix also changes, but not the other way around!
         # Thus we don't need to update self._tempWeightMatrix after each step, as we already update self.weight_matrix
@@ -43,6 +61,11 @@ class NeuronalNetwork:
         # Array which has the current output of each neuron
         self.neurons = np.zeros(self.numNeurons)
         self.delta = np.zeros(self.numNeurons)
+        
+  
+       
+        
+        
 
     def train(self, training_data, max_iterations):
         """
@@ -53,6 +76,7 @@ class NeuronalNetwork:
         while iteration < max_iterations:
 
             iteration += 1
+            print("Iteration %s/%s"%(iteration,max_iterations))
 
             # Get random training data
             i = randint(0, len(training_data) - 1)
@@ -165,9 +189,12 @@ class NeuronalNetwork:
             for k in range(len(input_vector), self.numNeurons):
                 self.neurons[k] = self.__fnc_output(k)
 
+            out = np.zeros(self.numOutputNeurons)
             for l in range(self.numOutputNeurons):
-                outnumber = self.numNeurons - l - 1
-                print("Output : %s Target : %s" % (self.neurons[outnumber], output_vector[self.numOutputNeurons-l-1]))
+                output = self.numInputNeurons+self.numHiddenNeurons +l
+                out[l] = 1 if self.neurons[output]  > 0.5 else 0 
+                #out[l] = self.numNeurons[output] 
+            print("Output : %s Target : %s" % (out, output_vector))
 
     def __fnc_propagate(self, index):
         """
