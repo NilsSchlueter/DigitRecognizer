@@ -39,13 +39,13 @@ class NeuronalNetwork:
         for i in range(self.numInputNeurons):
             for j in range(self.numHiddenNeurons):
                 hiddenIdx = j + self.numInputNeurons
-                rng = np.random.uniform(low=-0.5, high=0.5, size=(1)) 
+                rng = np.random.uniform(low=-1, high=1, size=(1)) 
                 self.weight_matrix[i][hiddenIdx] = rng[0]
         for i in range(self.numHiddenNeurons):
             hiddenIdx = i + self.numInputNeurons
             for j in range(self.numOutputNeurons):
                 outIdx = j + self.numInputNeurons + self.numHiddenNeurons
-                rng = np.random.uniform(low=-0.5, high=0.5, size=(1)) 
+                rng = np.random.uniform(low=-1, high=1, size=(1)) 
                 self.weight_matrix[hiddenIdx][outIdx] = rng[0]
                 
         print(self.weight_matrix)
@@ -105,6 +105,7 @@ class NeuronalNetwork:
     def __backpropagation_output(self, output_vector):
 
         # Backpropagation for Output Layer
+        sumerror = 0
         for l in range(self.numOutputNeurons):
 
             # Index of current output neuron
@@ -116,6 +117,7 @@ class NeuronalNetwork:
 
             # Delta Calculation
             error = self.__calculate_error(target_value, actual_value)
+            sumerror += error
 
             derivative_value = self.__derivative_activation(actual_value)
             self.delta[activation_index] = error * derivative_value
@@ -125,6 +127,7 @@ class NeuronalNetwork:
             for i in range(len(weight_col)):
                 if weight_col[i] != 0:
                     self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * self.delta[activation_index] * self.neurons[i]
+        print("Aktueller Fehler für Trainingsinput : %s"%(sumerror))
 
     def __backpropagation_hidden(self):
 
@@ -208,7 +211,7 @@ class NeuronalNetwork:
             print("Target : %s Output : %s" % (idxT,idxO))
             if(idxT == idxO):
                 count +=1
-            #print("Output : %s Target : %s" % (out, output_vector))
+            print("Outputvector : %s Targetvector : %s" % (out, output_vector))
 
         percent = count/len(test_data)
         print("%s wurden erfolgreich erkannt"%(percent))
