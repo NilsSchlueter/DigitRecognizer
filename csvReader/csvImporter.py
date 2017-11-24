@@ -14,7 +14,7 @@ class CSVImporter:
             next(read_csv, None)  # Skip header
 
             for row in read_csv:
-                for i in range(len(row)):
+                for i in range(1,len(row)):
                     if(int(row[i])>0):
                         row[i]= 1 
                     else:

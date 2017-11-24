@@ -8,7 +8,7 @@ trainingData = csvImporter.import_training_file("ressources/train.csv")
 testData = csvImporter.import_training_file("ressources/test.csv")
 
 # Create simple training and test data
-trainingData1 = trainingData
+trainingData1 = trainingData[:50]
 testData1 = testData
 
 # create network
@@ -21,6 +21,6 @@ network = NeuronalNetwork(
 print("Network created!")
 
 print("Training the network...")
-network.train(trainingData1, 1000)
+network.train(trainingData1, 1500)
 print("Test the network")
-network.test(trainingData1)
+network.test(testData1)

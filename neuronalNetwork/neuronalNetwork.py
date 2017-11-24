@@ -84,6 +84,7 @@ class NeuronalNetwork:
             # Read current input and output vectors
             input_vector = training_data[i]["input"]
             output_vector = training_data[i]["output"]
+            
 
             # Set input pattern to neurons in first layer
             for j in range(len(input_vector)):
@@ -176,6 +177,7 @@ class NeuronalNetwork:
         """
         Tests the network with the given test data.
         """
+        count = 0
         for i in range(len(test_data)):
 
             input_vector = test_data[i]["input"]
@@ -190,11 +192,26 @@ class NeuronalNetwork:
                 self.neurons[k] = self.__fnc_output(k)
 
             out = np.zeros(self.numOutputNeurons)
+            idxO = 0
+            tempO= 0
             for l in range(self.numOutputNeurons):
                 output = self.numInputNeurons+self.numHiddenNeurons +l
-                out[l] = 1 if self.neurons[output]  > 0.5 else 0 
-                #out[l] = self.numNeurons[output] 
-            print("Output : %s Target : %s" % (out, output_vector))
+                #out[l] = 1 if self.neurons[output]  > 0.5 else 0 
+                out[l] = self.neurons[output] 
+                if(out[l]>tempO):
+                    tempO = out[l]
+                    idxO = l
+                if(output_vector[l]==1):
+                    idxT = l
+            
+            
+            print("Target : %s Output : %s" % (idxT,idxO))
+            if(idxT == idxO):
+                count +=1
+            #print("Output : %s Target : %s" % (out, output_vector))
+
+        percent = count/len(test_data)
+        print("%s wurden erfolgreich erkannt"%(percent))
 
     def __fnc_propagate(self, index):
         """
