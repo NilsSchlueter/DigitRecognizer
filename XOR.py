@@ -1,5 +1,4 @@
-from neuronalNetwork.neuronalNetwork import NeuronalNetwork
-import numpy as np
+from networkComparison import NetworkComparer
 
 trainingData = [
     {"input": [1, 1],
@@ -23,14 +22,15 @@ testData = [
 
 networkData = [
     {"fnc_activate_type": "log",
-     "learn_rate": 0.9}
+     "learn_rate": [0.9],
+     "max_iterations": 10000,
+     "layers": [2, 3, 1]},
 ]
 
-xorNetwork = NeuronalNetwork(
-    layers=[2, 3, 1],
-    learn_rate=0.9,
-    fnc_activate_type="log"
+networkComparer = NetworkComparer(
+    networkData=networkData,
+    trainingData=trainingData,
+    testData=testData
 )
+networkComparer.compareNetworks()
 
-xorNetwork.train(training_data=trainingData, max_iterations=10000)
-xorNetwork.test(test_data=testData)
