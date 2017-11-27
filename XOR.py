@@ -28,13 +28,6 @@ networkData = [
 
 xorNetwork = NeuronalNetwork(
     layers=[2, 3, 1],
-    weight_matrix=np.array([
-        [0, 0, 0.8, 0.4, 0.3, 0],
-        [0, 0, 0.2, 0.9, 0.5, 0],
-        [0, 0, 0, 0, 0, 0.3],
-        [0, 0, 0, 0, 0, 0.5],
-        [0, 0, 0, 0, 0, 0.9],
-        [0, 0, 0, 0, 0, 0]]),
     learn_rate=0.9,
     fnc_activate_type="log"
 )
