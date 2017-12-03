@@ -66,8 +66,10 @@ class NeuronalNetwork:
 
         iteration = 0
         while iteration < max_iterations:
-
+            
             iteration += 1
+            print("Iteration %s/%s"%(iteration,max_iterations))
+         
 
             # Get random training data
             i = randint(0, len(training_data) - 1)
@@ -110,7 +112,7 @@ class NeuronalNetwork:
             # Get target and actual value
             target_value = output_vector[self.numOutputNeurons - l - 1]
             actual_value = self.neurons[activation_index]
-            real_output = self.output[l]
+            real_output = self.output[self.numOutputNeurons - l - 1]
 
             # Delta Calculation
             error = self.__calculate_error(target_value, real_output)
@@ -197,6 +199,7 @@ class NeuronalNetwork:
             out = np.zeros(self.numOutputNeurons)
             for l in range(self.numOutputNeurons):
                 out[l] = self.neurons[l + self.numInputNeurons + self.numHiddenNeurons]
+                
 
             print("Outputvector: %s Targetvector: %s Resultvector: %s" % (out, output_vector, self.output))
 
