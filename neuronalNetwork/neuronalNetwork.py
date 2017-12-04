@@ -66,9 +66,7 @@ class NeuronalNetwork:
         """
 
         # Redirect print to file
-        orig_stdout = sys.stdout
-        f = open("weight_matrix.txt", 'w')
-        sys.stdout = f
+        f = open("weight_matrix_evolution.txt", 'w')
 
         iteration = 0
         while iteration < max_iterations:
@@ -104,11 +102,15 @@ class NeuronalNetwork:
 
             # Print every 100th weight matrix to file
             if iteration % 100 == 0:
-                print("Weight Matrix after %s Iterations:\n" % (iteration))
-                print(self.weight_matrix)
+                f.write("Weight Matrix after %s Iterations:\n" % (iteration))
+                f.write(str(self.weight_matrix))
+                f.write("\n\n")
 
-        sys.stdout = orig_stdout
         f.close()
+
+        f_final = open("weight_matrix_final.txt", "w")
+        f_final.write(str(self.weight_matrix))
+        f_final.close()
 
     def __backpropagation(self, output_vector):
         self.__backpropagation_output(output_vector)
