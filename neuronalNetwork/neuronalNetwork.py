@@ -1,12 +1,11 @@
 import numpy as np
 import sys
 from random import randint
-import sys
 
 class NeuronalNetwork:
 
     def __init__(self, layers, weight_matrix=None, fnc_propagate_type=None, fnc_activate_type=None,
-                 fnc_output_type=None, treshold=0.5, learn_rate=0.5):
+                 fnc_output_type=None, treshold=0.5, learn_rate=0.5, rnd_values_low=-1.0, rnd_values_high=1.0):
 
         """
         Inits a new Neuronal Network.
@@ -34,19 +33,22 @@ class NeuronalNetwork:
         self.fnc_output_type = "identity" if fnc_output_type is None else fnc_output_type
 
         # RandomMatrix FeedForward
-        self.weight_matrix = np.zeros(shape=(self.numNeurons, self.numNeurons))
-        for i in range(self.numInputNeurons):
-            for j in range(self.numHiddenNeurons):
-                hiddenIdx = j + self.numInputNeurons
-                rng = np.random.uniform(low=-1, high=1, size=(1)) 
-                self.weight_matrix[i][hiddenIdx] = rng[0]
+        if weight_matrix is None:
+            self.weight_matrix = np.zeros(shape=(self.numNeurons, self.numNeurons))
+            for i in range(self.numInputNeurons):
+                for j in range(self.numHiddenNeurons):
+                    hiddenIdx = j + self.numInputNeurons
+                    rng = np.random.uniform(low=rnd_values_low, high=rnd_values_high, size=(1))
+                    self.weight_matrix[i][hiddenIdx] = rng[0]
 
-        for i in range(self.numHiddenNeurons):
-            hiddenIdx = i + self.numInputNeurons
-            for j in range(self.numOutputNeurons):
-                outIdx = j + self.numInputNeurons + self.numHiddenNeurons
-                rng = np.random.uniform(low=-1, high=1, size=(1)) 
-                self.weight_matrix[hiddenIdx][outIdx] = rng[0]
+            for i in range(self.numHiddenNeurons):
+                hiddenIdx = i + self.numInputNeurons
+                for j in range(self.numOutputNeurons):
+                    outIdx = j + self.numInputNeurons + self.numHiddenNeurons
+                    rng = np.random.uniform(low=rnd_values_low, high=rnd_values_high, size=(1))
+                    self.weight_matrix[hiddenIdx][outIdx] = rng[0]
+        else:
+            self.weight_matrix = weight_matrix
 
 
         # If self.weight_matrix changes, self._tempWeightMatrix also changes, but not the other way around!
@@ -65,52 +67,81 @@ class NeuronalNetwork:
         Trains the network with the given training data.
         """
 
-        # Redirect print to file
-        f = open("weight_matrix_evolution.txt", 'w')
+        try:
+            # Redirect print to file
+            f = open("weight_matrix_evolution.txt", 'w')
 
-        iteration = 0
-        while iteration < max_iterations:
-            
-            iteration += 1
-            print("Iteration %s/%s"%(iteration,max_iterations))
-         
+            iteration = 0
+            error_sum = 0
+            while iteration < max_iterations:
 
-            # Get random training data
-            i = randint(0, len(training_data) - 1)
+                iteration += 1
+                print("Iteration %s/%s"%(iteration,max_iterations))
 
-            # Read current input and output vectors
-            input_vector = training_data[i]["input"]
-            output_vector = training_data[i]["output"]
-            
+                # Get random training data
+                i = randint(0, len(training_data) - 1)
 
-            # Set input pattern to neurons in first layer
-            for j in range(len(input_vector)):
-                self.neurons[j] = input_vector[j]
+                # Read current input and output vectors
+                input_vector = training_data[i]["input"]
+                output_vector = training_data[i]["output"]
 
-            # Calculate output for the other neurons
-            for k in range(len(input_vector), self.numNeurons):
-                # Calculate Activation
-                self.neurons[k] = self.__fnc_output(k)
+                # Set input pattern to neurons in first layer
+                for j in range(len(input_vector)):
+                    self.neurons[j] = input_vector[j]
 
-                # Calculate output neurons with treshold
-                if k >= (self.numHiddenNeurons + self.numInputNeurons):
-                    self.output[k - self.numHiddenNeurons - self.numInputNeurons] = 1 if self.neurons[k] > self.treshold else 0
+                increase_error = False
 
-            # Change weight matrix
-            self.__backpropagation(output_vector)
-            self.weight_matrix = self._tempWeightMatrix
+                # Calculate output for the other neurons
+                for k in range(len(input_vector), self.numNeurons):
+                    # Calculate Activation
+                    self.neurons[k] = self.__fnc_output(k)
 
-            # Print every 100th weight matrix to file
-            if iteration % 100 == 0:
-                f.write("Weight Matrix after %s Iterations:\n" % (iteration))
-                f.write(str(self.weight_matrix))
-                f.write("\n\n")
+                    # Calculate output neurons with treshold
+                    if k >= (self.numHiddenNeurons + self.numInputNeurons):
+                        index = k - self.numHiddenNeurons - self.numInputNeurons
+                        self.output[index] = 1 if self.neurons[k] > self.treshold else 0
 
-        f.close()
+                        if self.output[index] != output_vector[index]:
+                           increase_error = True
 
-        f_final = open("weight_matrix_final.txt", "w")
-        f_final.write(str(self.weight_matrix))
-        f_final.close()
+                if increase_error:
+                    error_sum += 1
+
+                # Change weight matrix
+                self.__backpropagation(output_vector)
+                self.weight_matrix = self._tempWeightMatrix
+
+                # Print every 100th weight matrix and error sum to file
+                if iteration % 100 == 0:
+                    f.write("Weight Matrix after %s Iterations:\n" % (iteration))
+                    f.write(str(self.weight_matrix))
+                    f.write("\nError Sum: ")
+                    f.write(str(error_sum/100))
+                    print("Wron classifications in the last 100: " + str(error_sum/100))
+                    f.write("\n\n")
+
+                    error_sum = 0
+
+            f.close()
+
+            # USE WITH CAUTION
+            # np.set_printoptions(threshold=np.nan)
+            f_final = open("weight_matrix_final.txt", "w")
+            f_final.write(str(self.weight_matrix))
+            f_final.close()
+
+            # Save as numpy
+            np.save("weight_matrix_final_np", self.weight_matrix)
+
+        except KeyboardInterrupt:
+            # np.set_printoptions(threshold=np.nan)
+            f_final = open("weight_matrix_final.txt", "w")
+            f_final.write(str(self.weight_matrix))
+            f_final.close()
+
+            np.save("weight_matrix_final_np", self.weight_matrix)
+            sys.exit()
+
 
     def __backpropagation(self, output_vector):
         self.__backpropagation_output(output_vector)
@@ -136,6 +167,7 @@ class NeuronalNetwork:
 
             derivative_value = self.__derivative_activation(actual_value)
             self.delta[activation_index] = error * derivative_value
+
 
             # Weight Adjustment
             weight_col = self.weight_matrix[:, activation_index]
@@ -194,8 +226,13 @@ class NeuronalNetwork:
         """
         Tests the network with the given test data.
         """
+
+        resultStr = ""
+
         count = 0
         for i in range(len(test_data)):
+
+            increase_count = True
 
             input_vector = test_data[i]["input"]
             output_vector = test_data[i]["output"]
@@ -215,12 +252,18 @@ class NeuronalNetwork:
             out = np.zeros(self.numOutputNeurons)
             for l in range(self.numOutputNeurons):
                 out[l] = self.neurons[l + self.numInputNeurons + self.numHiddenNeurons]
-                
+                if self.output[l] != output_vector[l]:
+                    increase_count = False
 
-            print("Outputvector: %s Targetvector: %s Resultvector: %s" % (out, output_vector, self.output))
+            if increase_count:
+                count += 1
+
+            resultStr += "Outputvector: %s Targetvector: %s Resultvector: %s\n" % (out, output_vector, self.output)
 
         percent = count/len(test_data)
-        print("%s wurden erfolgreich erkannt" % (percent))
+        resultStr += "%s wurden erfolgreich erkannt" % (percent)
+
+        return resultStr
 
     def __fnc_propagate(self, index):
         """
