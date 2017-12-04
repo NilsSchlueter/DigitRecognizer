@@ -1,11 +1,11 @@
 import numpy as np
 from random import randint
-
+import sys
 
 class NeuronalNetwork:
 
     def __init__(self, layers, weight_matrix=None, fnc_propagate_type=None, fnc_activate_type=None,
-                 fnc_output_type=None, learn_rate=0.5):
+                 fnc_output_type=None, treshold=0.5, learn_rate=0.5):
 
         """
         Inits a new Neuronal Network.
@@ -20,6 +20,7 @@ class NeuronalNetwork:
         self.numOutputNeurons = layers[self.numLayers-1]
         self.numHiddenNeurons = layers[1]
         self.learnRate = learn_rate
+        self.treshold = treshold
 
         # Function type
         self.fnc_propagate_type = fnc_propagate_type
@@ -31,26 +32,21 @@ class NeuronalNetwork:
         self.fnc_activate_type = "identity" if fnc_activate_type is None else fnc_activate_type
         self.fnc_output_type = "identity" if fnc_output_type is None else fnc_output_type
 
-        # RandomMatrix with everything
-        #self.weight_matrix = np.random.uniform(low=-0.5, high=0.5, size=(self.numNeurons, self.numNeurons)) if weight_matrix is None else weight_matrix
-        
         # RandomMatrix FeedForward
-        self.weight_matrix = np.zeros(shape=(self.numNeurons,self.numNeurons))
+        self.weight_matrix = np.zeros(shape=(self.numNeurons, self.numNeurons))
         for i in range(self.numInputNeurons):
             for j in range(self.numHiddenNeurons):
                 hiddenIdx = j + self.numInputNeurons
                 rng = np.random.uniform(low=-1, high=1, size=(1)) 
                 self.weight_matrix[i][hiddenIdx] = rng[0]
+
         for i in range(self.numHiddenNeurons):
             hiddenIdx = i + self.numInputNeurons
             for j in range(self.numOutputNeurons):
                 outIdx = j + self.numInputNeurons + self.numHiddenNeurons
                 rng = np.random.uniform(low=-1, high=1, size=(1)) 
                 self.weight_matrix[hiddenIdx][outIdx] = rng[0]
-                
-        print(self.weight_matrix)
-            
-            
+
 
         # If self.weight_matrix changes, self._tempWeightMatrix also changes, but not the other way around!
         # Thus we don't need to update self._tempWeightMatrix after each step, as we already update self.weight_matrix
@@ -61,11 +57,7 @@ class NeuronalNetwork:
         # Array which has the current output of each neuron
         self.neurons = np.zeros(self.numNeurons)
         self.delta = np.zeros(self.numNeurons)
-        
-  
-       
-        
-        
+        self.output = np.zeros(self.numOutputNeurons)
 
     def train(self, training_data, max_iterations):
         """
@@ -74,9 +66,10 @@ class NeuronalNetwork:
 
         iteration = 0
         while iteration < max_iterations:
-
+            
             iteration += 1
             print("Iteration %s/%s"%(iteration,max_iterations))
+         
 
             # Get random training data
             i = randint(0, len(training_data) - 1)
@@ -92,7 +85,12 @@ class NeuronalNetwork:
 
             # Calculate output for the other neurons
             for k in range(len(input_vector), self.numNeurons):
+                # Calculate Activation
                 self.neurons[k] = self.__fnc_output(k)
+
+                # Calculate output neurons with treshold
+                if k >= (self.numHiddenNeurons + self.numInputNeurons):
+                    self.output[k - self.numHiddenNeurons - self.numInputNeurons] = 1 if self.neurons[k] > self.treshold else 0
 
             # Change weight matrix
             self.__backpropagation(output_vector)
@@ -114,9 +112,10 @@ class NeuronalNetwork:
             # Get target and actual value
             target_value = output_vector[self.numOutputNeurons - l - 1]
             actual_value = self.neurons[activation_index]
+            real_output = self.output[self.numOutputNeurons - l - 1]
 
             # Delta Calculation
-            error = self.__calculate_error(target_value, actual_value)
+            error = self.__calculate_error(target_value, real_output)
             sumerror += error
 
             derivative_value = self.__derivative_activation(actual_value)
@@ -127,7 +126,6 @@ class NeuronalNetwork:
             for i in range(len(weight_col)):
                 if weight_col[i] != 0:
                     self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * self.delta[activation_index] * self.neurons[i]
-        print("Aktueller Fehler für Trainingsinput : %s"%(sumerror))
 
     def __backpropagation_hidden(self):
 
@@ -194,27 +192,19 @@ class NeuronalNetwork:
             for k in range(len(input_vector), self.numNeurons):
                 self.neurons[k] = self.__fnc_output(k)
 
+                # Calculate output neurons with treshold
+                if k >= (self.numHiddenNeurons + self.numInputNeurons):
+                    self.output[k - self.numHiddenNeurons - self.numInputNeurons] = 1 if self.neurons[k] > self.treshold else 0
+
             out = np.zeros(self.numOutputNeurons)
-            idxO = 0
-            tempO= 0
             for l in range(self.numOutputNeurons):
-                output = self.numInputNeurons+self.numHiddenNeurons +l
-                #out[l] = 1 if self.neurons[output]  > 0.5 else 0 
-                out[l] = self.neurons[output] 
-                if(out[l]>tempO):
-                    tempO = out[l]
-                    idxO = l
-                if(output_vector[l]==1):
-                    idxT = l
-            
-            
-            print("Target : %s Output : %s" % (idxT,idxO))
-            if(idxT == idxO):
-                count +=1
-            print("Outputvector : %s Targetvector : %s" % (out, output_vector))
+                out[l] = self.neurons[l + self.numInputNeurons + self.numHiddenNeurons]
+                
+
+            print("Outputvector: %s Targetvector: %s Resultvector: %s" % (out, output_vector, self.output))
 
         percent = count/len(test_data)
-        print("%s wurden erfolgreich erkannt"%(percent))
+        print("%s wurden erfolgreich erkannt" % (percent))
 
     def __fnc_propagate(self, index):
         """
