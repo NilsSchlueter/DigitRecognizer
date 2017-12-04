@@ -1,4 +1,5 @@
 import numpy as np
+import sys
 from random import randint
 import sys
 
@@ -64,6 +65,11 @@ class NeuronalNetwork:
         Trains the network with the given training data.
         """
 
+        # Redirect print to file
+        orig_stdout = sys.stdout
+        f = open("weight_matrix.txt", 'w')
+        sys.stdout = f
+
         iteration = 0
         while iteration < max_iterations:
             
@@ -95,6 +101,14 @@ class NeuronalNetwork:
             # Change weight matrix
             self.__backpropagation(output_vector)
             self.weight_matrix = self._tempWeightMatrix
+
+            # Print every 100th weight matrix to file
+            if iteration % 100 == 0:
+                print("Weight Matrix after %s Iterations:\n" % (iteration))
+                print(self.weight_matrix)
+
+        sys.stdout = orig_stdout
+        f.close()
 
     def __backpropagation(self, output_vector):
         self.__backpropagation_output(output_vector)
