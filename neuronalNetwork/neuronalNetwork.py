@@ -4,7 +4,7 @@ from random import randint
 
 class NeuronalNetwork:
 
-    def __init__(self, layers, weight_matrix=None, fnc_propagate_type=None, fnc_activate_type=None,
+    def __init__(self, layers, weight_matrix=None, fnc_propagate_type=None, fnc_activate_type=None, fnc_learn_type="BP",
                  fnc_output_type=None, treshold=0.5, learn_rate=0.5, rnd_values_low=-1.0, rnd_values_high=1.0):
 
         """
@@ -26,6 +26,7 @@ class NeuronalNetwork:
         self.fnc_propagate_type = fnc_propagate_type
         self.fnc_activate_type = fnc_activate_type
         self.fnc_output_type = fnc_output_type
+        self.fnc_learn_type = fnc_learn_type #BP, ERS, ERS2
 
         # Set the functions to default values if no other values are provided
         self.fnc_propagate_type = "netto_input" if fnc_propagate_type is None else fnc_propagate_type
@@ -76,7 +77,6 @@ class NeuronalNetwork:
             while iteration < max_iterations:
 
                 iteration += 1
-                print("Iteration %s/%s"%(iteration,max_iterations))
 
                 # Get random training data
                 i = randint(0, len(training_data) - 1)
@@ -108,7 +108,7 @@ class NeuronalNetwork:
                     error_sum += 1
 
                 # Change weight matrix
-                self.__backpropagation(output_vector)
+                self.__fnc_learn(output_vector)
                 self.weight_matrix = self._tempWeightMatrix
 
                 # Print every 100th weight matrix and error sum to file
@@ -117,7 +117,8 @@ class NeuronalNetwork:
                     f.write(str(self.weight_matrix))
                     f.write("\nError Sum: ")
                     f.write(str(error_sum/100))
-                    print("Wron classifications in the last 100: " + str(error_sum/100))
+                    print("Iteration %s/%s" % (iteration, max_iterations))
+                    print("Wrong classifications in the last 100 iterations: " + str(error_sum/100))
                     f.write("\n\n")
 
                     error_sum = 0
@@ -142,12 +143,11 @@ class NeuronalNetwork:
             np.save("weight_matrix_final_np", self.weight_matrix)
             sys.exit()
 
+    def __fnc_learn(self, output_vector):
+        self.__fnc_learn_output(output_vector)
+        self.__fnc_learn_hidden()
 
-    def __backpropagation(self, output_vector):
-        self.__backpropagation_output(output_vector)
-        self.__backpropagation_hidden()
-
-    def __backpropagation_output(self, output_vector):
+    def __fnc_learn_output(self, output_vector):
 
         # Backpropagation for Output Layer
         sumerror = 0
@@ -161,21 +161,30 @@ class NeuronalNetwork:
             actual_value = self.neurons[activation_index]
             real_output = self.output[self.numOutputNeurons - l - 1]
 
-            # Delta Calculation
+            # Calculate Error
             error = self.__calculate_error(target_value, real_output)
             sumerror += error
 
-            derivative_value = self.__derivative_activation(actual_value)
-            self.delta[activation_index] = error * derivative_value
-
+            # Delta Calculation depending on learn function
+            if self.fnc_learn_type == "BP":
+                derivative_value = self.__derivative_activation(actual_value)
+                self.delta[activation_index] = error * derivative_value
+            elif self.fnc_learn_type == "ERS" or self.fnc_learn_type == "ERS2":
+                self.delta[activation_index] = error
 
             # Weight Adjustment
             weight_col = self.weight_matrix[:, activation_index]
             for i in range(len(weight_col)):
                 if weight_col[i] != 0:
-                    self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * self.delta[activation_index] * self.neurons[i]
 
-    def __backpropagation_hidden(self):
+                    if self.fnc_learn_type == "BP":
+                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * self.delta[activation_index] * self.neurons[i]
+                    elif self.fnc_learn_type == "ERS":
+                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * abs(1 - abs(weight_col[i])) * self.delta[activation_index] * self.__sgn(self.neurons[i])
+                    elif self.fnc_learn_type == "ERS2":
+                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * abs(1 - abs(weight_col[i])) * self.delta[activation_index] * self.neurons[i]
+
+    def __fnc_learn_hidden(self):
 
         for l in range(self.numHiddenNeurons):
 
@@ -190,15 +199,23 @@ class NeuronalNetwork:
                 if weight_row[n] != 0:
                     error += self.delta[n] * weight_row[n]
 
-            derivative_value = self.__derivative_activation(actual_value)
-            self.delta[activation_index] = error * derivative_value
+            if self.fnc_learn_type == "BP":
+                derivative_value = self.__derivative_activation(actual_value)
+                self.delta[activation_index] = error * derivative_value
+            elif self.fnc_learn_type == "ERS" or self.fnc_learn_type == "ERS2":
+                self.delta[activation_index] = error
 
             # Weight Adjustment
             weight_col = self.weight_matrix[:, activation_index]
             for i in range(len(weight_col)):
                 if weight_col[i] != 0:
-                    self._tempWeightMatrix[i][activation_index] \
-                        = weight_col[i] - self.learnRate * self.delta[activation_index] * self.neurons[i]
+
+                    if self.fnc_learn_type == "BP":
+                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * self.delta[activation_index] * self.neurons[i]
+                    elif self.fnc_learn_type == "ERS":
+                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * abs(1 - abs(weight_col[i])) * self.delta[activation_index] * self.__sgn(self.neurons[i])
+                    elif self.fnc_learn_type == "ERS2":
+                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * abs(1 - abs(weight_col[i])) * self.delta[activation_index] * self.neurons[i]
 
     @staticmethod
     def __calculate_error(target, output):
@@ -207,6 +224,15 @@ class NeuronalNetwork:
         """
         error = output - target
         return error
+
+    @staticmethod
+    def __sgn(value):
+        if value < 0:
+            return -1
+        elif value == 0:
+            return 0
+        else:
+            return 1
 
     def __derivative_activation(self, output):
         """
@@ -289,7 +315,7 @@ class NeuronalNetwork:
             return 1 / (1 + np.exp(-self.__fnc_propagate(index)))
 
         elif self.fnc_activate_type == "tanH":
-            return 2 / (1 + np.exp(-2 * self.__fnc_propagate(index))) - 1
+            return (2 / (1 + np.exp(-2 * self.__fnc_propagate(index)))) - 1
 
     def __fnc_output(self, index):
         """

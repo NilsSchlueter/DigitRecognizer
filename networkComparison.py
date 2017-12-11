@@ -24,6 +24,7 @@ class NetworkComparer:
                     layers=data["layers"],
                     learn_rate=curLearnRate,
                     fnc_activate_type=data["fnc_activate_type"],
+                    fnc_learn_type=data["fnc_learn_type"],
                     weight_matrix=data["weight_matrix"],
                     rnd_values_low=data["rnd_values_low"],
                     rnd_values_high=data["rnd_values_high"])

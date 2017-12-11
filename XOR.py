@@ -23,12 +23,13 @@ testData = [
      "output": [0]}]
 
 networkData = [
-    {"fnc_activate_type": "log",
-     "learn_rate": [0.9, 0.8, 0.7],
+    {"fnc_activate_type": "tanH",
+     "fnc_learn_type": "BP",
+     "learn_rate": [0.1, 0.15, 0.2, 0.25],
      "layers": [2, 3, 1],
      "weight_matrix": None,
-     "rnd_values_low": -1,
-     "rnd_values_high": 1,
+     "rnd_values_low": -0.3,
+     "rnd_values_high": 0.3,
      "max_iterations": 10000
      }]
 

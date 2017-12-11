@@ -10,8 +10,8 @@ trainingData = csvImporter.import_training_file("ressources/train.csv")
 testData = csvImporter.import_training_file("ressources/test.csv")
 
 # Create simple training and test data
-trainingData1 = trainingData[:5]
-testData1 = trainingData[:5]
+trainingData1 = trainingData[:-10000]
+testData1 = trainingData[-100:]
 
 # create network
 print("Network created!")
@@ -19,13 +19,14 @@ print("Network created!")
 weight_matrix = np.load("weight_matrix_final_np.npy")
 
 networkData = [{
-        "layers": [784, 20, 10],
-        "fnc_activate_type": "log",
-        "learn_rate": [0.9],
-        "weight_matrix": None, #weight_matrix,
-        "rnd_values_low": -1.0,
-        "rnd_values_high": 1.0,
-        "max_iterations": 300
+        "layers": [784, 15, 10],
+        "fnc_activate_type": "tanH",
+        "fnc_learn_type": "ERS",
+        "learn_rate": [0.1],
+        "weight_matrix": None, # weight_matrix,
+        "rnd_values_low": -0.3,
+        "rnd_values_high": 0.3,
+        "max_iterations": 40000
     }]
 
 networkComparer = NetworkComparer(
