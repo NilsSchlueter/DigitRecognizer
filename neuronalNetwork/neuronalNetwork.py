@@ -2,8 +2,8 @@ import numpy as np
 import sys
 from random import randint
 
-class NeuronalNetwork:
 
+class NeuronalNetwork:
     def __init__(self, layers, weight_matrix=None, fnc_propagate_type=None, fnc_activate_type=None, fnc_learn_type="BP",
                  fnc_output_type=None, treshold=0.5, learn_rate=0.5, rnd_values_low=-1.0, rnd_values_high=1.0):
 
@@ -14,11 +14,13 @@ class NeuronalNetwork:
         """
 
         # Misc attributes
+        self.layers = layers
         self.numLayers = len(layers)
         self.numNeurons = sum(layers)
         self.numInputNeurons = layers[0]
-        self.numOutputNeurons = layers[self.numLayers-1]
-        self.numHiddenNeurons = layers[1]
+        self.numOutputNeurons = layers[self.numLayers - 1]
+        self.numHiddenNeurons = sum(layers) - self.numInputNeurons - self.numOutputNeurons
+        self.numHiddenLayers = self.numLayers - 2
         self.learnRate = learn_rate
         self.treshold = treshold
 
@@ -26,31 +28,46 @@ class NeuronalNetwork:
         self.fnc_propagate_type = fnc_propagate_type
         self.fnc_activate_type = fnc_activate_type
         self.fnc_output_type = fnc_output_type
-        self.fnc_learn_type = fnc_learn_type #BP, ERS, ERS2
+        self.fnc_learn_type = fnc_learn_type  # BP, ERS, ERS2
 
         # Set the functions to default values if no other values are provided
         self.fnc_propagate_type = "netto_input" if fnc_propagate_type is None else fnc_propagate_type
         self.fnc_activate_type = "identity" if fnc_activate_type is None else fnc_activate_type
         self.fnc_output_type = "identity" if fnc_output_type is None else fnc_output_type
 
-        # RandomMatrix FeedForward
+        # Generate a random weight matrix which is Feed Forward
         if weight_matrix is None:
-            self.weight_matrix = np.zeros(shape=(self.numNeurons, self.numNeurons))
-            for i in range(self.numInputNeurons):
-                for j in range(self.numHiddenNeurons):
-                    hiddenIdx = j + self.numInputNeurons
-                    rng = np.random.uniform(low=rnd_values_low, high=rnd_values_high, size=(1))
-                    self.weight_matrix[i][hiddenIdx] = rng[0]
 
-            for i in range(self.numHiddenNeurons):
-                hiddenIdx = i + self.numInputNeurons
-                for j in range(self.numOutputNeurons):
-                    outIdx = j + self.numInputNeurons + self.numHiddenNeurons
+            # Init Matrix with all zeros
+            self.weight_matrix = np.zeros(shape=(self.numNeurons, self.numNeurons))
+
+            # Create Connections between Input and Hidden Neurons and init them with random weights
+            for i in range(self.numInputNeurons):
+                for j in range(layers[1]):
+                    hidden_index = j + self.numInputNeurons
                     rng = np.random.uniform(low=rnd_values_low, high=rnd_values_high, size=(1))
-                    self.weight_matrix[hiddenIdx][outIdx] = rng[0]
+                    self.weight_matrix[i][hidden_index] = rng[0]
+
+            # Create Connections between the Hidden Neurons in different Layers
+            for i in range(self.numHiddenLayers - 1):
+
+                # Loop through neurons of current hidden layer
+                for j in range(layers[i + 1]):
+
+                    # Loop through neurons in next hidden layer
+                    for k in range(layers[i + 2]):
+                        rng = np.random.uniform(low=rnd_values_low, high=rnd_values_high, size=(1))
+                        self.weight_matrix[j + self.numInputNeurons][k + self.numInputNeurons + layers[i + 1]] = rng[0]
+
+            # Create Connections between Hidden and Output Neurons and init them with random weights
+            for i in range(layers[len(layers) - 2]):
+                hidden_index = i + self.numInputNeurons + self.numHiddenNeurons - layers[len(layers) - 2]
+                for j in range(self.numOutputNeurons):
+                    out_idx = j + self.numInputNeurons + self.numHiddenNeurons
+                    rng = np.random.uniform(low=rnd_values_low, high=rnd_values_high, size=(1))
+                    self.weight_matrix[hidden_index][out_idx] = rng[0]
         else:
             self.weight_matrix = weight_matrix
-
 
         # If self.weight_matrix changes, self._tempWeightMatrix also changes, but not the other way around!
         # Thus we don't need to update self._tempWeightMatrix after each step, as we already update self.weight_matrix
@@ -69,7 +86,7 @@ class NeuronalNetwork:
         """
 
         try:
-            # Redirect print to file
+
             f = open("weight_matrix_evolution.txt", 'w')
 
             iteration = 0
@@ -102,7 +119,7 @@ class NeuronalNetwork:
                         self.output[index] = 1 if self.neurons[k] > self.treshold else 0
 
                         if self.output[index] != output_vector[index]:
-                           increase_error = True
+                            increase_error = True
 
                 if increase_error:
                     error_sum += 1
@@ -116,9 +133,9 @@ class NeuronalNetwork:
                     f.write("Weight Matrix after %s Iterations:\n" % (iteration))
                     f.write(str(self.weight_matrix))
                     f.write("\nError Sum: ")
-                    f.write(str(error_sum/100))
+                    f.write(str(error_sum / 100))
                     print("Iteration %s/%s" % (iteration, max_iterations))
-                    print("Wrong classifications in the last 100 iterations: " + str(error_sum/100))
+                    print("Wrong classifications in the last 100 iterations: " + str(error_sum / 100))
                     f.write("\n\n")
 
                     error_sum = 0
@@ -148,6 +165,13 @@ class NeuronalNetwork:
         self.__fnc_learn_hidden()
 
     def __fnc_learn_output(self, output_vector):
+        '''
+        Adjusts the weigths between the output layer in the last hidden layer
+
+        :param output_vector:
+        :return:
+        '''
+
 
         # Backpropagation for Output Layer
         sumerror = 0
@@ -178,14 +202,57 @@ class NeuronalNetwork:
                 if weight_col[i] != 0:
 
                     if self.fnc_learn_type == "BP":
-                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * self.delta[activation_index] * self.neurons[i]
+                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * self.delta[
+                            activation_index] * self.neurons[i]
                     elif self.fnc_learn_type == "ERS":
-                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * abs(1 - abs(weight_col[i])) * self.delta[activation_index] * self.__sgn(self.neurons[i])
+                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * abs(
+                            1 - abs(weight_col[i])) * self.delta[activation_index] * self.__sgn(self.neurons[i])
                     elif self.fnc_learn_type == "ERS2":
-                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * abs(1 - abs(weight_col[i])) * self.delta[activation_index] * self.neurons[i]
+                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * abs(
+                            1 - abs(weight_col[i])) * self.delta[activation_index] * self.neurons[i]
 
     def __fnc_learn_hidden(self):
+        '''
+        Adjusts the weights between the hidden layers
 
+        :return:
+        '''
+
+        # Get the Hidden Layer
+        for i in range(self.numHiddenLayers - 1, -1, -1):
+            print(i)
+
+            # Loop through the neurons of this layer
+            for j in range(self.layers[i + 1]):
+
+                # Loop through the neurons of the previous layer
+                for k in range(self.layers[i]):
+
+                    rowOffset = self.numInputNeurons
+                    colOffset = 0
+                    if i != 0:
+                        rowOffset += self.layers[i]
+                        colOffset += self.numInputNeurons
+
+                    row_index = j + rowOffset
+                    col_index = k + colOffset
+
+                    if self.fnc_learn_type == "BP":
+                        self._tempWeightMatrix[row_index][col_index] = \
+                            self.weight_matrix[row_index][col_index]\
+                            - self.learnRate * self.delta[activation_index] * self.neurons[i]
+                    elif self.fnc_learn_type == "ERS":
+                        self._tempWeightMatrix[row_index][col_index] = \
+                            self.weight_matrix[row_index][col_index]\
+                            - self.learnRate * abs(1 - abs(weight_col[i])) * self.delta[activation_index] * self.__sgn(self.neurons[i])
+                    elif self.fnc_learn_type == "ERS2":
+                        self._tempWeightMatrix[row_index][col_index] = \
+                            self.weight_matrix[row_index][col_index]\
+                            - self.learnRate * abs(1 - abs(weight_col[i])) * self.delta[activation_index] * self.neurons[i]
+
+                    print("Adjust weight: %s %s " % (j + rowOffset, k + colOffset))
+
+        '''
         for l in range(self.numHiddenNeurons):
 
             # Index of current output neuron
@@ -211,11 +278,15 @@ class NeuronalNetwork:
                 if weight_col[i] != 0:
 
                     if self.fnc_learn_type == "BP":
-                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * self.delta[activation_index] * self.neurons[i]
+                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * self.delta[
+                            activation_index] * self.neurons[i]
                     elif self.fnc_learn_type == "ERS":
-                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * abs(1 - abs(weight_col[i])) * self.delta[activation_index] * self.__sgn(self.neurons[i])
+                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * abs(
+                            1 - abs(weight_col[i])) * self.delta[activation_index] * self.__sgn(self.neurons[i])
                     elif self.fnc_learn_type == "ERS2":
-                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * abs(1 - abs(weight_col[i])) * self.delta[activation_index] * self.neurons[i]
+                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * abs(
+                            1 - abs(weight_col[i])) * self.delta[activation_index] * self.neurons[i]
+            '''
 
     @staticmethod
     def __calculate_error(target, output):
@@ -273,7 +344,8 @@ class NeuronalNetwork:
 
                 # Calculate output neurons with treshold
                 if k >= (self.numHiddenNeurons + self.numInputNeurons):
-                    self.output[k - self.numHiddenNeurons - self.numInputNeurons] = 1 if self.neurons[k] > self.treshold else 0
+                    self.output[k - self.numHiddenNeurons - self.numInputNeurons] = 1 if self.neurons[
+                                                                                             k] > self.treshold else 0
 
             out = np.zeros(self.numOutputNeurons)
             for l in range(self.numOutputNeurons):
@@ -286,7 +358,7 @@ class NeuronalNetwork:
 
             resultStr += "Outputvector: %s Targetvector: %s Resultvector: %s\n" % (out, output_vector, self.output)
 
-        percent = count/len(test_data)
+        percent = count / len(test_data)
         resultStr += "%s wurden erfolgreich erkannt" % (percent)
 
         return resultStr

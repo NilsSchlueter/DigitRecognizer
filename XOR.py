@@ -25,15 +25,15 @@ testData = [
 networkData = [
     {"fnc_activate_type": "tanH",
      "fnc_learn_type": "BP",
-     "learn_rate": [0.1, 0.15, 0.2, 0.25],
-     "layers": [2, 3, 1],
+     "learn_rate": [0.1],
+     "layers": [2, 3, 2, 1],
      "weight_matrix": None,
      "rnd_values_low": -0.3,
      "rnd_values_high": 0.3,
-     "max_iterations": 10000
+     "max_iterations": 1
      }]
 
-weight_matrix = np.load("weight_matrix_final_np.npy")
+#weight_matrix = np.load("weight_matrix_final_np.npy")
 
 networkComparer = NetworkComparer(
     networkData=networkData,

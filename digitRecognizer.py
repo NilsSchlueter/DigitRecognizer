@@ -19,13 +19,13 @@ print("Network created!")
 weight_matrix = np.load("weight_matrix_final_np.npy")
 
 networkData = [{
-        "layers": [784, 15, 10],
-        "fnc_activate_type": "tanH",
-        "fnc_learn_type": "ERS",
-        "learn_rate": [0.1],
+        "layers": [784, 20, 20, 10],
+        "fnc_activate_type": "log",
+        "fnc_learn_type": "BP",
+        "learn_rate": [0.9],
         "weight_matrix": None, # weight_matrix,
-        "rnd_values_low": -0.3,
-        "rnd_values_high": 0.3,
+        "rnd_values_low": -1,
+        "rnd_values_high": 1,
         "max_iterations": 40000
     }]
 
