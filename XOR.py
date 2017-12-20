@@ -1,6 +1,5 @@
 from networkComparison import NetworkComparer
-import json
-import numpy as np
+from neuronalNetwork.dynamicNeuronalNetwork import DynamicNeuronalNetwork
 
 trainingData = [
     {"input": [1, 1],
@@ -35,10 +34,11 @@ networkData = [
 
 #weight_matrix = np.load("weight_matrix_final_np.npy")
 
-networkComparer = NetworkComparer(
-    networkData=networkData,
-    trainingData=trainingData,
-    testData=testData
+network = DynamicNeuronalNetwork(
+    layers=[2, 3, 2, 1],
+    weight_matrix=None,
+    learn_rate=0.9,
+    rnd_values_low=-1,
+    rnd_values_high=1
 )
-networkComparer.compareNetworks()
 
