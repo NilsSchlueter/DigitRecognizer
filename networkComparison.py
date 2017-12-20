@@ -28,7 +28,7 @@ class NetworkComparer:
                     weight_matrix=data["weight_matrix"],
                     rnd_values_low=data["rnd_values_low"],
                     rnd_values_high=data["rnd_values_high"])
-                curNetwork.train(training_data=self.trainingData, max_iterations=data["max_iterations"])
+                #curNetwork.train(training_data=self.trainingData, max_iterations=data["max_iterations"])
                 testResults = curNetwork.test(test_data=self.testData)
                 f.write(testResults)
 

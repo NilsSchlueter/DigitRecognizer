@@ -11,19 +11,20 @@ testData = csvImporter.import_training_file("ressources/test.csv")
 
 # Create simple training and test data
 trainingData1 = trainingData[:-10000]
-testData1 = trainingData[-100:]
+testData1 = trainingData[-1000:]
 
 # create network
 print("Network created!")
 
-weight_matrix = np.load("weight_matrix_final_np.npy")
+weight_matrix = np.load("weight_matrix_BP_with_8000_Iterations.npy")
+print(weight_matrix.shape)
 
 networkData = [{
-        "layers": [784, 20, 20, 10],
+        "layers": [784, 20, 10],
         "fnc_activate_type": "log",
         "fnc_learn_type": "BP",
         "learn_rate": [0.9],
-        "weight_matrix": None, # weight_matrix,
+        "weight_matrix": weight_matrix,
         "rnd_values_low": -1,
         "rnd_values_high": 1,
         "max_iterations": 40000
