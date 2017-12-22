@@ -36,6 +36,8 @@ class DynamicNeuronalNetwork:
         else:
             self.weight_matrix = weight_matrix
 
+        self._tempWeightMatrix = self.weight_matrix
+
         # Generate Neuron information
         self.neurons = []
         num_neurons = 0
@@ -47,14 +49,16 @@ class DynamicNeuronalNetwork:
                     "id": num_neurons,
                     "layer_id": layerId,
                     "layer_type": "input" if layerId == 0 else "output" if layerId == len(layers) - 1 else "hidden",
-                    "propagate_value": None,    # Value of the neuron after the NETTO INPUT function
-                    "activation_value": None,   # Value of the neuron after the ACTIVATION function
-                    "output_value": 0,          # Value of the neuron after the OUTPUT function
+                    "propagate_value": 0,    # Value of the neuron after the NETTO INPUT function
+                    "activation_value": 0,   # Value of the neuron after the ACTIVATION function
+                    "output_value": 0,       # Value of the neuron after the OUTPUT function
                 }
                 neurons.append(neuron)
                 num_neurons += 1
 
             self.neurons.append(neurons)
+
+        self.delta = np.zeros(self.numNeurons)
 
     def train(self, training_data, max_iterations):
 
@@ -80,12 +84,13 @@ class DynamicNeuronalNetwork:
 
                 increase_error = False
 
+                # Calculate output for the other neurons
                 for k in range(self.numInputNeurons, self.numNeurons, 1):
+                    self.__set_neuron_value(neuron_id=k, value=self.__fnc_output(k), value_type="activation_value")
 
-                    self.__set_neuron_value(neuron_id=k, value=self.__fnc_output(k), value_type="output_value")
-
+                    # Calculate output neurons with treshold
                     if k >= (self.numHiddenNeurons + self.numInputNeurons):
-                        output_value = 1 if self.__get_neuron_value(k, "output_value") > self.treshold else 0
+                        output_value = 1 if self.__get_neuron_value(k, "activation_value") > self.treshold else 0
                         self.__set_neuron_value(neuron_id=k, value=output_value, value_type="output_value")
 
                         if output_value != output_vector[k - self.numHiddenNeurons - self.numInputNeurons]:
@@ -127,17 +132,125 @@ class DynamicNeuronalNetwork:
             np.save("weight_matrix_final_np", self.weight_matrix)
             sys.exit()
 
+    def test(self, test_data):
 
+        resultStr = ""
+        count = 0
+        for i in range(len(test_data)):
+
+            increase_count = True
+
+            input_vector = test_data[i]["input"]
+            output_vector = test_data[i]["output"]
+
+            # Set input pattern to neurons in first layer
+            for j in range(len(input_vector)):
+                self.__set_neuron_value(neuron_id=j, value=input_vector[j], value_type="activation_value")
+
+            # Calculate output for the other neurons
+            for k in range(self.numInputNeurons, self.numNeurons, 1):
+                self.__set_neuron_value(neuron_id=k, value=self.__fnc_output(k), value_type="activation_value")
+
+                # Calculate output neurons with treshold
+                if k >= (self.numHiddenNeurons + self.numInputNeurons):
+                    output_value = 1 if self.__get_neuron_value(k, "activation_value") > self.treshold else 0
+                    self.__set_neuron_value(neuron_id=k, value=output_value, value_type="output_value")
+
+            out = np.zeros(self.numOutputNeurons)
+            for l in range(self.numOutputNeurons):
+                out[l] = self.__get_neuron_value(neuron_id=l + self.numInputNeurons + self.numHiddenNeurons, value_type="activation_value")
+                if self.__get_neuron_value(l + self.numInputNeurons + self.numHiddenNeurons, "output_value") != output_vector[l]:
+                    increase_count = False
+
+            if increase_count:
+                count += 1
+
+            resultStr += "Outputvector: %s Targetvector: %s Resultvector: %s\n" % (out, output_vector, self.neurons)
+
+        percent = count / len(test_data)
+        resultStr += "%s wurden erfolgreich erkannt" % (percent)
+
+        f = open("test_results.txt", 'w')
+        f.write(resultStr)
+        f.close(
+
+        )
+
+        return resultStr
+
+    def __fnc_learn(self, output_vector):
+
+        error_sum = 0
+
+        # Loop through every layer except for the input layer
+        for i in range(self.numLayers - 1, 0, -1):
+
+            # Loop through each neuron in the layer
+            for j in range(len(self.neurons[i])):
+                cur_neuron = self.neurons[i][j]
+
+                # Get target and actual value
+                actual_value = cur_neuron["activation_value"]
+                real_output = cur_neuron["output_value"]
+                error = 0
+
+                # If this is an output neuron, get the target value to calculate the error
+                if cur_neuron["layer_type"] == "output":
+                    target_value = output_vector[j]
+
+                    # Calculate error
+                    error = self.__calculate_error(target_value, real_output)
+                    error_sum += error
+
+
+                # If this is a hidden neuron
+                elif cur_neuron["layer_type"] == "hidden":
+
+                    weight_row = self.weight_matrix[cur_neuron["id"], :]
+                    for n in range(len(weight_row)):
+                        if weight_row[n] != 0:
+                            error += self.delta[n] * weight_row[n]
+
+                # Delta Calculation depending on learn function
+                if self.fnc_learn_type == "BP":
+                    derivative_value = self.__derivative_activation(actual_value)
+                    self.delta[cur_neuron["id"]] = error * derivative_value
+                elif self.fnc_learn_type == "ERS" or self.fnc_learn_type == "ERS2":
+                    self.delta[cur_neuron["id"]] = error
+
+                # Loop through each neuron in previous layer
+                for k in range(len(self.neurons[i - 1])):
+                    prev_neuron = self.neurons[i-1][k]
+
+                    if self.fnc_learn_type == "BP":
+                        self._tempWeightMatrix[prev_neuron["id"]][cur_neuron["id"]] = self.weight_matrix[prev_neuron["id"]][cur_neuron["id"]] - self.learnRate * self.delta[cur_neuron["id"]] * cur_neuron["activation_value"]
+
+                '''
+                # Weight Adjustment
+                weight_col = self.weight_matrix[:, cur_neuron["id"]]
+                for k in range(len(weight_col)):
+                    if weight_col[k] != 0:
+
+                        if self.fnc_learn_type == "BP":
+                            self._tempWeightMatrix[k][j] = weight_col[k] - self.learnRate * cur_neuron["delta_value"] * cur_neuron["activation_value"]
+
+                        elif self.fnc_learn_type == "ERS":
+                            self._tempWeightMatrix[k][j] = weight_col[k] - self.learnRate * abs(1 - abs(weight_col[k])) * cur_neuron["delta_value"] * self.__sgn(cur_neuron["activation_value"])
+
+                        elif self.fnc_learn_type == "ERS2":
+                                self._tempWeightMatrix[k][j] = weight_col[k] - self.learnRate * abs(1 - abs(weight_col[k])) *  cur_neuron["delta_value"] * cur_neuron["activation_value"]
+                '''
     def __fnc_propagate(self, index):
         weight_col = self.weight_matrix[:, index]
 
         netto_input = 0
         for i in range(len(weight_col)):
-            netto_input += weight_col[i] * self.__get_neuron_value(index, "output_value")
+            netto_input += weight_col[i] * self.__get_neuron_value(i, "activation_value")
 
         return netto_input
 
     def __fnc_activate(self, index):
+
 
         if self.fnc_activate_type == "identity":
             return self.__fnc_propagate(index)
@@ -152,6 +265,7 @@ class DynamicNeuronalNetwork:
         return self.__fnc_activate(index)
 
     def __set_neuron_value(self, neuron_id, value, value_type):
+
 
         if neuron_id < self.numInputNeurons:
             self.neurons[0][neuron_id][value_type] = value
@@ -170,6 +284,7 @@ class DynamicNeuronalNetwork:
                     return
                 else:
                     remainder -= len(self.neurons[i])
+
 
     def __get_neuron_value(self, neuron_id, value_type):
 
@@ -220,3 +335,34 @@ class DynamicNeuronalNetwork:
                 out_idx = j + self.numInputNeurons + self.numHiddenNeurons
                 rng = np.random.uniform(low=rnd_values_low, high=rnd_values_high, size=(1))
                 self.weight_matrix[hidden_index][out_idx] = rng[0]
+
+    @staticmethod
+    def __calculate_error(target, output):
+        """
+        Calculate the Error of the Network
+        """
+        error = output - target
+        return error
+
+    @staticmethod
+    def __sgn(value):
+        if value < 0:
+            return -1
+        elif value == 0:
+            return 0
+        else:
+            return 1
+
+    def __derivative_activation(self, output):
+        """
+        derivative of the Activation Function
+        """
+
+        if self.fnc_activate_type == "identity":
+            return 1
+
+        elif self.fnc_activate_type == "log":
+            return output * (1 - output)
+
+        elif self.fnc_activate_type == "tanH":
+            return 1 - (output * output)

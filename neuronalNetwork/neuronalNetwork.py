@@ -217,6 +217,7 @@ class NeuronalNetwork:
 
             # Weight Adjustment
             weight_col = self.weight_matrix[:, activation_index]
+
             for i in range(len(weight_col)):
                 if weight_col[i] != 0:
 
