@@ -38,6 +38,7 @@ class DynamicNeuronalNetwork:
 
         self._tempWeightMatrix = self.weight_matrix
 
+
         # Generate Neuron information
         self.neurons = []
         num_neurons = 0
@@ -172,9 +173,7 @@ class DynamicNeuronalNetwork:
 
         f = open("test_results.txt", 'w')
         f.write(resultStr)
-        f.close(
-
-        )
+        f.close()
 
         return resultStr
 
