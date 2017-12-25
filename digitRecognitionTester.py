@@ -1,6 +1,7 @@
 from tkinter import *
 from tkinter import filedialog
 from neuronalNetwork.neuronalNetwork import NeuronalNetwork
+from helpers.testDataVisualizer import Visualizer
 import numpy as np
 
 
@@ -61,20 +62,9 @@ class digitRecognitionTester:
             for y in range(height):
                 colors.append(self.get_pixel_color(self.canvas, y, x))
 
-        shortedColors = []
-        sum = 0
-        for i in range(len(colors)):
-            if i % 100 == 0:
-                for j in range(i - 100, i):
-                    sum += colors[i]
+        #visualizer = Visualizer()
+        #visualizer.visualize(colors)
 
-                if sum > 5:
-                    shortedColors.append(1)
-                else:
-                    shortedColors.append(0)
-            sum = 0
-
-        print(len(shortedColors))
         self.test_img({"input": colors})
 
     @staticmethod
@@ -86,9 +76,9 @@ class digitRecognitionTester:
             color = canvas.itemcget(index, "fill")
             color = color.upper()
             if color != '':
-                return 0
+                return 1
 
-        return 1
+        return 0
 
     def test_img(self, testData):
         network = NeuronalNetwork(
@@ -99,10 +89,10 @@ class digitRecognitionTester:
         result = network.test_single_digit(testData)
         print(result)
 
-        resultDigit = 0
+        resultDigit = -1
         for i in range(len(result)):
             if result[i] != 0:
-                resultDigit = i + 1
+                resultDigit = i
 
         self.digit_label["text"] = ("Folgende Ziffer wurde erkannt: %s" % resultDigit)
 

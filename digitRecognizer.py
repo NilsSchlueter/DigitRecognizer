@@ -1,8 +1,9 @@
 import numpy as np
+
 from networkComparison import NetworkComparer
-from csvReader.csvImporter import CSVImporter
-from neuronalNetwork.neuronalNetwork import NeuronalNetwork
 from neuronalNetwork.dynamicNeuronalNetwork import DynamicNeuronalNetwork
+from helpers.testDataVisualizer import Visualizer
+from helpers.csvImporter import CSVImporter
 
 # Import data from the csv files
 csvImporter = CSVImporter()
@@ -15,10 +16,13 @@ testData1 = trainingData[-1000:]
 
 # create network
 print("Network created!")
+#weight_matrix = np.load("weight_matrix_BP_with_8000_Iterations.npy")
+#print(weight_matrix.shape)
 
-weight_matrix = np.load("weight_matrix_BP_with_8000_Iterations.npy")
-print(weight_matrix.shape)
+visualizer = Visualizer()
+visualizer.visualize(testData[40]["input"], 28)
 
+'''
 networkData = [{
         "layers": [784, 20, 10],
         "fnc_activate_type": "log",
@@ -51,3 +55,4 @@ network2 = DynamicNeuronalNetwork(
 )
 network2.train(training_data=trainingData1, max_iterations=40000)
 network2.test(test_data=testData1)
+'''
