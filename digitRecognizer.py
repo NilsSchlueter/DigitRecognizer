@@ -2,7 +2,7 @@ import numpy as np
 from networkComparison import NetworkComparer
 from csvReader.csvImporter import CSVImporter
 from neuronalNetwork.neuronalNetwork import NeuronalNetwork
-
+from neuronalNetwork.dynamicNeuronalNetwork import DynamicNeuronalNetwork
 
 # Import data from the csv files
 csvImporter = CSVImporter()
@@ -38,5 +38,16 @@ networkComparer = NetworkComparer(
 
 
 print("Train network!")
-networkComparer.compareNetworks()
+#networkComparer.compareNetworks()
 print("Network trained!")
+
+network2 = DynamicNeuronalNetwork(
+    layers=[784, 15, 15, 10],
+    fnc_activate_type="log",
+    learn_rate=0.9,
+    fnc_learn_type="BP",
+    rnd_values_low=-1,
+    rnd_values_high=1
+)
+network2.train(training_data=trainingData1, max_iterations=40000)
+network2.test(test_data=testData1)

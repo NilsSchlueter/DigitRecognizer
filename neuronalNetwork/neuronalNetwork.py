@@ -186,6 +186,24 @@ class NeuronalNetwork:
 
         return resultStr
 
+    def test_single_digit(self, digit_data):
+
+        input_vector = digit_data["input"]
+
+        # Set input pattern to neurons in first layer
+        for j in range(len(input_vector)):
+            self.neurons[j] = input_vector[j]
+
+        # Calculate output for the other neurons
+        for k in range(len(input_vector), self.numNeurons):
+            self.neurons[k] = self.__fnc_output(k)
+
+            # Calculate output neurons with treshold
+            if k >= (self.numHiddenNeurons + self.numInputNeurons):
+               self.output[k - self.numHiddenNeurons - self.numInputNeurons] = 1 if self.neurons[k] > self.treshold else 0
+
+        return self.output
+
     def __fnc_learn(self, output_vector):
         self.__fnc_learn_output(output_vector)
         self.__fnc_learn_hidden()

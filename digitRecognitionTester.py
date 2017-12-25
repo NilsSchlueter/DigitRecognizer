@@ -1,6 +1,8 @@
 from tkinter import *
 from tkinter import filedialog
+from neuronalNetwork.neuronalNetwork import NeuronalNetwork
 import numpy as np
+
 
 class digitRecognitionTester:
 
@@ -17,7 +19,7 @@ class digitRecognitionTester:
         master.config(menu=menubar)
 
         # Digit Label
-        self.digit_label = Label(master, text="Folgende Ziffer wurde erkannt: -")
+        self.digit_label = Label(master, text="")
         self.digit_label.pack(side=RIGHT)
 
 
@@ -28,10 +30,15 @@ class digitRecognitionTester:
 
         self.button_test.pack(side=RIGHT)
 
+        self.button_delete = Button(frame,
+                                    text="Reset",
+                                    command=self.reset)
+        self.button_delete.pack(side=RIGHT)
+
         # Canvas to draw on
         self.canvas = Canvas(frame,
-                             width=280,
-                             height=280,
+                             width=28,
+                             height=28,
                              bg="grey")
         self.canvas.pack(expand=NO, fill=NONE)
         self.canvas.bind("<B1-Motion>", self.paint)
@@ -44,20 +51,78 @@ class digitRecognitionTester:
         self.weight_matrix = np.array([])
 
     def get_img(self):
-        print("Getting image")
+        self.status_label["text"] = ""
+
+        width = int(self.canvas["width"])
+        height = int(self.canvas["height"])
+        colors = []
+
+        for x in range(width):
+            for y in range(height):
+                colors.append(self.get_pixel_color(self.canvas, y, x))
+
+        shortedColors = []
+        sum = 0
+        for i in range(len(colors)):
+            if i % 100 == 0:
+                for j in range(i - 100, i):
+                    sum += colors[i]
+
+                if sum > 5:
+                    shortedColors.append(1)
+                else:
+                    shortedColors.append(0)
+            sum = 0
+
+        print(len(shortedColors))
+        self.test_img({"input": colors})
+
+    @staticmethod
+    def get_pixel_color(canvas, x, y):
+        ids = canvas.find_overlapping(x, y, x, y)
+
+        if len(ids) > 0:
+            index = ids[-1]
+            color = canvas.itemcget(index, "fill")
+            color = color.upper()
+            if color != '':
+                return 0
+
+        return 1
+
+    def test_img(self, testData):
+        network = NeuronalNetwork(
+            layers=[784, 20, 10],
+            weight_matrix=self.weight_matrix,
+            fnc_activate_type="log"
+        )
+        result = network.test_single_digit(testData)
+        print(result)
+
+        resultDigit = 0
+        for i in range(len(result)):
+            if result[i] != 0:
+                resultDigit = i + 1
+
+        self.digit_label["text"] = ("Folgende Ziffer wurde erkannt: %s" % resultDigit)
+
 
     def paint(self, event):
         python_green = "#000000"
-        x1, y1 = (event.x - 5), (event.y - 5)
-        x2, y2 = (event.x + 5), (event.y + 5)
+        x1, y1 = (event.x - 1), (event.y - 1)
+        x2, y2 = (event.x + 1), (event.y + 1)
         self.canvas.create_rectangle(x1, y1, x2, y2, fill=python_green)
 
     def load_matrix(self):
         file = filedialog.askopenfilename(title="Weight Matrix laden (*.np Datei)")
 
         self.weight_matrix = np.load(file)
+        print(self.weight_matrix.shape)
         self.status_label["text"] = "Bereit!"
 
+    def reset(self):
+        self.canvas.delete("all")
+        self.digit_label["text"] = ""
 
 root = Tk()
 app = digitRecognitionTester(root)

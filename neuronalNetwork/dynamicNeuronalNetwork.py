@@ -239,6 +239,7 @@ class DynamicNeuronalNetwork:
                         elif self.fnc_learn_type == "ERS2":
                                 self._tempWeightMatrix[k][j] = weight_col[k] - self.learnRate * abs(1 - abs(weight_col[k])) *  cur_neuron["delta_value"] * cur_neuron["activation_value"]
                 '''
+
     def __fnc_propagate(self, index):
         weight_col = self.weight_matrix[:, index]
 
@@ -283,7 +284,6 @@ class DynamicNeuronalNetwork:
                     return
                 else:
                     remainder -= len(self.neurons[i])
-
 
     def __get_neuron_value(self, neuron_id, value_type):
 
