@@ -1,7 +1,6 @@
 from tkinter import *
 from tkinter import filedialog
 from neuronalNetwork.neuronalNetwork import NeuronalNetwork
-from helpers.testDataVisualizer import Visualizer
 import numpy as np
 
 

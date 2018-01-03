@@ -11,7 +11,7 @@ trainingData = csvImporter.import_training_file("ressources/train.csv")
 testData = csvImporter.import_training_file("ressources/test.csv")
 
 # Create simple training and test data
-trainingData1 = trainingData[:-10000]
+trainingData1 = trainingData[:-1000]
 testData1 = trainingData[-1000:]
 
 # create network
