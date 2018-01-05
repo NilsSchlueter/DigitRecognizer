@@ -33,7 +33,7 @@ networkData = [
      "max_iterations": 10000
      }]
 
-#weight_matrix = np.load("weight_matrix_final_np.npy")
+#weight_matrix = np.load("weight_matrix_80_percent.npy")
 
 #networkComparer = NetworkComparer(networkData=networkData, trainingData=trainingData, testData=testData)
 #networkComparer.compareNetworks()
