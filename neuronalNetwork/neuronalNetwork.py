@@ -143,6 +143,67 @@ class NeuronalNetwork:
             np.save("weight_matrix_final_np", self.weight_matrix)
             sys.exit()
 
+    def test(self, test_data):
+        """
+        Tests the network with the given test data.
+        """
+
+        resultStr = ""
+
+        count = 0
+        for i in range(len(test_data)):
+
+            increase_count = True
+
+            input_vector = test_data[i]["input"]
+            output_vector = test_data[i]["output"]
+
+            # Set input pattern to neurons in first layer
+            for j in range(len(input_vector)):
+                self.neurons[j] = input_vector[j]
+
+            # Calculate output for the other neurons
+            for k in range(len(input_vector), self.numNeurons):
+                self.neurons[k] = self.__fnc_output(k)
+
+                # Calculate output neurons with treshold
+                if k >= (self.numHiddenNeurons + self.numInputNeurons):
+                    self.output[k - self.numHiddenNeurons - self.numInputNeurons] = 1 if self.neurons[k] > self.treshold else 0
+
+            out = np.zeros(self.numOutputNeurons)
+            for l in range(self.numOutputNeurons):
+                out[l] = self.neurons[l + self.numInputNeurons + self.numHiddenNeurons]
+                if self.output[l] != output_vector[l]:
+                    increase_count = False
+
+            if increase_count:
+                count += 1
+
+            resultStr += "Outputvector: %s Targetvector: %s Resultvector: %s\n" % (out, output_vector, self.output)
+
+        percent = count/len(test_data)
+        resultStr += "%s wurden erfolgreich erkannt" % (percent)
+
+        return resultStr
+
+    def test_single_digit(self, digit_data):
+
+        input_vector = digit_data["input"]
+
+        # Set input pattern to neurons in first layer
+        for j in range(len(input_vector)):
+            self.neurons[j] = input_vector[j]
+
+        # Calculate output for the other neurons
+        for k in range(len(input_vector), self.numNeurons):
+            self.neurons[k] = self.__fnc_output(k)
+
+            # Calculate output neurons with treshold
+            if k >= (self.numHiddenNeurons + self.numInputNeurons):
+               self.output[k - self.numHiddenNeurons - self.numInputNeurons] = 1 if self.neurons[k] > self.treshold else 0
+
+        return self.output
+
     def __fnc_learn(self, output_vector):
         self.__fnc_learn_output(output_vector)
         self.__fnc_learn_hidden()
@@ -174,6 +235,7 @@ class NeuronalNetwork:
 
             # Weight Adjustment
             weight_col = self.weight_matrix[:, activation_index]
+
             for i in range(len(weight_col)):
                 if weight_col[i] != 0:
 
@@ -247,49 +309,6 @@ class NeuronalNetwork:
 
         elif self.fnc_activate_type == "tanH":
             return 1 - (output * output)
-
-    def test(self, test_data):
-        """
-        Tests the network with the given test data.
-        """
-
-        resultStr = ""
-
-        count = 0
-        for i in range(len(test_data)):
-
-            increase_count = True
-
-            input_vector = test_data[i]["input"]
-            output_vector = test_data[i]["output"]
-
-            # Set input pattern to neurons in first layer
-            for j in range(len(input_vector)):
-                self.neurons[j] = input_vector[j]
-
-            # Calculate output for the other neurons
-            for k in range(len(input_vector), self.numNeurons):
-                self.neurons[k] = self.__fnc_output(k)
-
-                # Calculate output neurons with treshold
-                if k >= (self.numHiddenNeurons + self.numInputNeurons):
-                    self.output[k - self.numHiddenNeurons - self.numInputNeurons] = 1 if self.neurons[k] > self.treshold else 0
-
-            out = np.zeros(self.numOutputNeurons)
-            for l in range(self.numOutputNeurons):
-                out[l] = self.neurons[l + self.numInputNeurons + self.numHiddenNeurons]
-                if self.output[l] != output_vector[l]:
-                    increase_count = False
-
-            if increase_count:
-                count += 1
-
-            resultStr += "Outputvector: %s Targetvector: %s Resultvector: %s\n" % (out, output_vector, self.output)
-
-        percent = count/len(test_data)
-        resultStr += "%s wurden erfolgreich erkannt" % (percent)
-
-        return resultStr
 
     def __fnc_propagate(self, index):
         """
