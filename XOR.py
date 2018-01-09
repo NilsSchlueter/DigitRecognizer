@@ -30,14 +30,16 @@ networkData = [
      "weight_matrix": None,
      "rnd_values_low": -0.3,
      "rnd_values_high": 0.3,
-     "max_iterations": 10000
+     "max_iterations": 10000,
+     "epochs": 10
      }]
 
 #weight_matrix = np.load("weight_matrix_80_percent.npy")
 
-#networkComparer = NetworkComparer(networkData=networkData, trainingData=trainingData, testData=testData)
-#networkComparer.compareNetworks()
+networkComparer = NetworkComparer(networkData=networkData, trainingData=trainingData, testData=testData)
+networkComparer.compareNetworks()
 
+'''
 network = DynamicNeuronalNetwork(
     layers=[2, 3, 1],
     fnc_learn_type="BP",
@@ -50,3 +52,4 @@ network = DynamicNeuronalNetwork(
 
 network.train(training_data=trainingData, max_iterations=100000)
 network.test(test_data=testData)
+'''

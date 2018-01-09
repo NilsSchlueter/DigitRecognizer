@@ -20,13 +20,14 @@ print("Network created!")
 
 networkData = [{
         "layers": [784, 20, 10],
-        "fnc_activate_type": "log",
+        "fnc_activate_type": "tanH",
         "fnc_learn_type": "BP",
         "learn_rate": [0.3],
         "weight_matrix": None,
         "rnd_values_low": -0.5,
         "rnd_values_high": 0.5,
-        "max_iterations": 80000
+        "max_iterations": 80000,
+        "epcohs": 2
     }]
 
 networkComparer = NetworkComparer(
