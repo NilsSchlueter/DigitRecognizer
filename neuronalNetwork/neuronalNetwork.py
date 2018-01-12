@@ -5,7 +5,7 @@ from random import randint
 class NeuronalNetwork:
 
     def __init__(self, layers, weight_matrix=None, fnc_propagate_type=None, fnc_activate_type=None, fnc_learn_type="BP",
-                 fnc_output_type=None, treshold=0.5, learn_rate=0.5, rnd_values_low=-1.0, rnd_values_high=1.0):
+                 fnc_output_type=None, treshold=0.5, learn_rate=0.5, rnd_values_low=-1.0, rnd_values_high=1.0, number_epochs=1):
 
         """
         Inits a new Neuronal Network.
@@ -21,6 +21,7 @@ class NeuronalNetwork:
         self.numHiddenNeurons = layers[1]
         self.learnRate = learn_rate
         self.treshold = treshold
+        self.epochs = number_epochs
 
         # Function type
         self.fnc_propagate_type = fnc_propagate_type
@@ -72,74 +73,57 @@ class NeuronalNetwork:
             # Redirect print to file
             f = open("weight_matrix_evolution.txt", 'w')
 
-            iteration = 0
-            error_sum = 0
-            while iteration < max_iterations:
+            for j in range(self.epochs):
+                error_sum = 0
 
-                iteration += 1
+                np.random.shuffle(training_data)
+                for i in range(len(training_data)):
 
-                # Get random training data
-                i = randint(0, len(training_data) - 1)
+                    # Read current input and output vectors
+                    input_vector = training_data[i]["input"]
+                    output_vector = training_data[i]["output"]
 
-                # Read current input and output vectors
-                input_vector = training_data[i]["input"]
-                output_vector = training_data[i]["output"]
+                    # Set input pattern to neurons in first layer
+                    self.neurons[:self.numInputNeurons] = input_vector[:]
 
-                # Set input pattern to neurons in first layer
-                for j in range(len(input_vector)):
-                    self.neurons[j] = input_vector[j]
+                    increase_error = False
 
-                increase_error = False
+                    # Calculate output for the other neurons
+                    for k in range(len(input_vector), self.numNeurons):
+                        # Calculate Activation
+                        self.neurons[k] = self.__fnc_output(k)
 
-                # Calculate output for the other neurons
-                for k in range(len(input_vector), self.numNeurons):
-                    # Calculate Activation
-                    self.neurons[k] = self.__fnc_output(k)
+                        # Calculate output neurons with treshold
+                        if k >= (self.numHiddenNeurons + self.numInputNeurons):
+                            index = k - self.numHiddenNeurons - self.numInputNeurons
+                            self.output[index] = 1 if self.neurons[k] > self.treshold else 0
 
-                    # Calculate output neurons with treshold
-                    if k >= (self.numHiddenNeurons + self.numInputNeurons):
-                        index = k - self.numHiddenNeurons - self.numInputNeurons
-                        self.output[index] = 1 if self.neurons[k] > self.treshold else 0
+                            if self.output[index] != output_vector[index]:
+                               increase_error = True
 
-                        if self.output[index] != output_vector[index]:
-                           increase_error = True
+                    if increase_error:
+                        error_sum += 1
 
-                if increase_error:
-                    error_sum += 1
+                    # Change weight matrix
+                    self.__fnc_learn(output_vector)
+                    self.weight_matrix = self._tempWeightMatrix
 
-                # Change weight matrix
-                self.__fnc_learn(output_vector)
-                self.weight_matrix = self._tempWeightMatrix
+                    # Print every 100th weight matrix and error sum to file
+                    if i % 100 == 0:
+                        f.write("Weight Matrix after %s Iterations:\n" % (i))
+                        f.write(str(self.weight_matrix))
+                        f.write("\nError Sum: ")
+                        f.write(str(error_sum/100))
+                        print("Iteration %s/%s in epoch:%s/%s " % (i, len(training_data), j, self.epochs - 1))
+                        print("Wrong classifications in the last 100 iterations: " + str(error_sum/100))
+                        f.write("\n\n")
 
-                # Print every 100th weight matrix and error sum to file
-                if iteration % 100 == 0:
-                    f.write("Weight Matrix after %s Iterations:\n" % (iteration))
-                    f.write(str(self.weight_matrix))
-                    f.write("\nError Sum: ")
-                    f.write(str(error_sum/100))
-                    print("Iteration %s/%s" % (iteration, max_iterations))
-                    print("Wrong classifications in the last 100 iterations: " + str(error_sum/100))
-                    f.write("\n\n")
+                        error_sum = 0
 
-                    error_sum = 0
-
-            f.close()
-
-            # USE WITH CAUTION
-            # np.set_printoptions(threshold=np.nan)
-            f_final = open("weight_matrix_final.txt", "w")
-            f_final.write(str(self.weight_matrix))
-            f_final.close()
-
-            # Save as numpy
-            np.save("weight_matrix_final_np", self.weight_matrix)
+                # Save as numpy
+                np.save("weight_matrix_final_np", self.weight_matrix)
 
         except KeyboardInterrupt:
-            # np.set_printoptions(threshold=np.nan)
-            f_final = open("weight_matrix_final.txt", "w")
-            f_final.write(str(self.weight_matrix))
-            f_final.close()
-
             np.save("weight_matrix_final_np", self.weight_matrix)
             sys.exit()
 

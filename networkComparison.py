@@ -27,7 +27,8 @@ class NetworkComparer:
                     fnc_learn_type=data["fnc_learn_type"],
                     weight_matrix=data["weight_matrix"],
                     rnd_values_low=data["rnd_values_low"],
-                    rnd_values_high=data["rnd_values_high"])
+                    rnd_values_high=data["rnd_values_high"],
+                    number_epochs=data["epochs"])
                 curNetwork.train(training_data=self.trainingData, max_iterations=data["max_iterations"])
                 testResults = curNetwork.test(test_data=self.testData)
                 f.write(testResults)
