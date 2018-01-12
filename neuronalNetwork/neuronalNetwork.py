@@ -5,7 +5,7 @@ from random import randint
 class NeuronalNetwork:
 
     def __init__(self, layers, weight_matrix=None, fnc_propagate_type=None, fnc_activate_type=None, fnc_learn_type="BP",
-                 fnc_output_type=None, treshold=0.5, learn_rate=0.5, rnd_values_low=-1.0, rnd_values_high=1.0):
+                 fnc_output_type=None, treshold=None, learn_rate=0.5, rnd_values_low=-1.0, rnd_values_high=1.0):
 
         """
         Inits a new Neuronal Network.
@@ -99,10 +99,16 @@ class NeuronalNetwork:
                     # Calculate output neurons with treshold
                     if k >= (self.numHiddenNeurons + self.numInputNeurons):
                         index = k - self.numHiddenNeurons - self.numInputNeurons
-                        self.output[index] = 1 if self.neurons[k] > self.treshold else 0
+                        if self.treshold is not None:
+                            self.output[index] = 1 if self.neurons[k] > self.treshold else 0
+                            if self.output[index] != output_vector[index]:
+                                increase_error = True
+                        else:
+                            self.output[index] =self.neurons[k]
 
-                        if self.output[index] != output_vector[index]:
-                           increase_error = True
+
+
+
 
                 if increase_error:
                     error_sum += 1
@@ -168,21 +174,40 @@ class NeuronalNetwork:
 
                 # Calculate output neurons with treshold
                 if k >= (self.numHiddenNeurons + self.numInputNeurons):
-                    self.output[k - self.numHiddenNeurons - self.numInputNeurons] = 1 if self.neurons[k] > self.treshold else 0
+                    if self.treshold is not None:
+                        self.output[k - self.numHiddenNeurons - self.numInputNeurons] = 1 if self.neurons[k] > self.treshold else 0
+                    else:
+                        self.output[k - self.numHiddenNeurons - self.numInputNeurons] = self.neurons[k]
+
 
             out = np.zeros(self.numOutputNeurons)
+            resultDigit = -1
+            networkDigit = 0
+            max_val = 0
             for l in range(self.numOutputNeurons):
                 out[l] = self.neurons[l + self.numInputNeurons + self.numHiddenNeurons]
-                if self.output[l] != output_vector[l]:
+                if self.output[l] != output_vector[l] and self.treshold is not None:
                     increase_count = False
+                if self.treshold is None:
+                    if self.output[l] > max_val:
+                        max_val = self.output[l]
+                        networkDigit = l
+                    if output_vector[l] == 1:
+                        resultDigit = l
 
-            if increase_count:
+
+
+            if networkDigit == resultDigit:
                 count += 1
 
             resultStr += "Outputvector: %s Targetvector: %s Resultvector: %s\n" % (out, output_vector, self.output)
 
         percent = count/len(test_data)
         resultStr += "%s wurden erfolgreich erkannt" % (percent)
+
+        f_final = open("test_results.txt", "w")
+        f_final.write(resultStr)
+        f_final.close()
 
         return resultStr
 
@@ -200,8 +225,11 @@ class NeuronalNetwork:
 
             # Calculate output neurons with treshold
             if k >= (self.numHiddenNeurons + self.numInputNeurons):
-               self.output[k - self.numHiddenNeurons - self.numInputNeurons] = 1 if self.neurons[k] > self.treshold else 0
-
+                if self.treshold is not None:
+                    self.output[k - self.numHiddenNeurons - self.numInputNeurons] = 1 if self.neurons[
+                                                                                             k] > self.treshold else 0
+                else:
+                    self.output[k - self.numHiddenNeurons - self.numInputNeurons] = self.neurons[k]
         return self.output
 
     def __fnc_learn(self, output_vector):

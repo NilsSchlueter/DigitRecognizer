@@ -79,8 +79,10 @@ class DigitGallery:
 
         # Turn output vector into digit
         resultDigit = -1
+        max_val = 0
         for i in range(len(result)):
-            if result[i] != 0:
+            if result[i] > max_val:
+                max_val = result[i]
                 resultDigit = i
 
         self.visualize(data=self.testData[value]["input"], result=resultDigit)
