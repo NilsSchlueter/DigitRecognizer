@@ -89,8 +89,10 @@ class digitRecognitionTester:
         print(result)
 
         resultDigit = -1
+        max_val = 0
         for i in range(len(result)):
-            if result[i] != 0:
+            if result[i] > max_val:
+                max_val = result[i]
                 resultDigit = i
 
         self.digit_label["text"] = ("Folgende Ziffer wurde erkannt: %s" % resultDigit)
@@ -98,8 +100,8 @@ class digitRecognitionTester:
 
     def paint(self, event):
         python_green = "#000000"
-        x1, y1 = (event.x - 1), (event.y - 1)
-        x2, y2 = (event.x + 1), (event.y + 1)
+        x1, y1 = (event.x - 2), (event.y - 2)
+        x2, y2 = (event.x + 2), (event.y + 2)
         self.canvas.create_rectangle(x1, y1, x2, y2, fill=python_green)
 
     def load_matrix(self):
