@@ -22,8 +22,8 @@ testData = [
     {"input": [0, 0],
      "output": [0]}]
 
-
 network = NeuronalNetwork(
+
     layers=[2, 3, 1],
     fnc_learn_type="BP",
     fnc_activate_type="log",
@@ -36,3 +36,4 @@ network = NeuronalNetwork(
 
 network.train(training_data=trainingData, max_iterations=1000)
 network.test(test_data=testData)
+'''

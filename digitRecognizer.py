@@ -18,6 +18,7 @@ weight_matrix = np.load("weight_matrix_final_np.npy")
 #print(weight_matrix.shape)
 
 
+
 network2 = NeuronalNetwork(
     layers=[784, 20, 10],
     fnc_activate_type="log",
