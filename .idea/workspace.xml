@@ -3,8 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="78968bb0-2c11-4875-9dec-b1be5f503939" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change beforePath="$PROJECT_DIR$/XOR.py" afterPath="$PROJECT_DIR$/XOR.py" />
       <change beforePath="$PROJECT_DIR$/digitRecognizer.py" afterPath="$PROJECT_DIR$/digitRecognizer.py" />
-      <change beforePath="$PROJECT_DIR$/weight_matrix_BP_with_8000_Iterations.npy" afterPath="" />
+      <change beforePath="$PROJECT_DIR$/weight_matrix_final_np.npy" afterPath="$PROJECT_DIR$/weight_matrix_final_np.npy" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -14,18 +15,18 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/DigitRecognizer$XOR.coverage" NAME="XOR Coverage Results" MODIFIED="1515774602010" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/DigitRecognizer$DigitDraw.coverage" NAME="DigitDraw Coverage Results" MODIFIED="1515844055132" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/DigitRecognizer$DigitNetwork.coverage" NAME="DigitNetwork Coverage Results" MODIFIED="1515842568063" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/DigitRecognizer$XOR.coverage" NAME="XOR Coverage Results" MODIFIED="1515855015033" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/DigitRecognizer$DigitDraw.coverage" NAME="DigitDraw Coverage Results" MODIFIED="1515945499714" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/DigitRecognizer$DigitNetwork.coverage" NAME="DigitNetwork Coverage Results" MODIFIED="1515850966699" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/DigitRecognizer$DigitTest.coverage" NAME="DigitTest Coverage Results" MODIFIED="1515778539535" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="dynamicNeuronalNetwork.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="dynamicNeuronalNetwork.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/neuronalNetwork/dynamicNeuronalNetwork.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="17">
-              <caret line="255" column="40" lean-forward="false" selection-start-line="255" selection-start-column="40" selection-end-line="255" selection-end-column="40" />
+              <caret line="278" column="44" lean-forward="false" selection-start-line="278" selection-start-column="44" selection-end-line="278" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -34,8 +35,8 @@
       <file leaf-file-name="digitRecognizer.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/digitRecognizer.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="373">
-              <caret line="23" column="18" lean-forward="false" selection-start-line="23" selection-start-column="18" selection-end-line="23" selection-end-column="18" />
+            <state relative-caret-position="238">
+              <caret line="17" column="27" lean-forward="false" selection-start-line="17" selection-start-column="27" selection-end-line="17" selection-end-column="27" />
               <folding>
                 <element signature="e#0#18#0" expanded="true" />
               </folding>
@@ -46,8 +47,8 @@
       <file leaf-file-name="XOR.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/XOR.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="578">
-              <caret line="36" column="61" lean-forward="false" selection-start-line="36" selection-start-column="61" selection-end-line="36" selection-end-column="61" />
+            <state relative-caret-position="476">
+              <caret line="30" column="18" lean-forward="false" selection-start-line="30" selection-start-column="18" selection-end-line="30" selection-end-column="18" />
               <folding>
                 <element signature="e#0#45#0" expanded="true" />
               </folding>
@@ -58,7 +59,7 @@
       <file leaf-file-name="digitGallery.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/digitGallery.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="407">
+            <state relative-caret-position="1241">
               <caret line="80" column="1" lean-forward="false" selection-start-line="80" selection-start-column="1" selection-end-line="85" selection-end-column="31" />
               <folding />
             </state>
@@ -68,18 +69,18 @@
       <file leaf-file-name="digitRecognitionTester.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/digitRecognitionTester.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="527">
+            <state relative-caret-position="1700">
               <caret line="103" column="44" lean-forward="false" selection-start-line="103" selection-start-column="44" selection-end-line="103" selection-end-column="44" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="test_results.txt" pinned="false" current-in-tab="true">
+      <file leaf-file-name="test_results.txt" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test_results.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="532">
-              <caret line="7500" column="45" lean-forward="false" selection-start-line="7500" selection-start-column="45" selection-end-line="7500" selection-end-column="45" />
+            <state relative-caret-position="68">
+              <caret line="4" column="31" lean-forward="false" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="31" />
               <folding />
             </state>
           </provider>
@@ -165,11 +166,11 @@
         <option value="$PROJECT_DIR$/helpers/testDataVisualizer.py" />
         <option value="$PROJECT_DIR$/test_results.txt" />
         <option value="$PROJECT_DIR$/neuronalNetwork/dynamicNeuronalNetwork.py" />
-        <option value="$PROJECT_DIR$/XOR.py" />
         <option value="$PROJECT_DIR$/digitGallery.py" />
         <option value="$PROJECT_DIR$/neuronalNetwork/neuronalNetwork.py" />
         <option value="$PROJECT_DIR$/digitRecognitionTester.py" />
         <option value="$PROJECT_DIR$/digitRecognizer.py" />
+        <option value="$PROJECT_DIR$/XOR.py" />
       </list>
     </option>
   </component>
@@ -180,8 +181,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="2008" />
-    <option name="y" value="34" />
+    <option name="x" value="1932" />
+    <option name="y" value="349" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
   </component>
@@ -201,6 +202,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -217,8 +220,6 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -499,7 +500,21 @@
       <option name="project" value="LOCAL" />
       <updated>1515800550386</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="new weight matrix">
+      <created>1515844323816</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1515844323816</updated>
+    </task>
+    <task id="LOCAL-00011" summary="new weight matrix">
+      <created>1515844376346</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1515844376346</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
@@ -554,7 +569,8 @@
     <MESSAGE value="added first draft of test gui" />
     <MESSAGE value="added digit gallery" />
     <MESSAGE value="added learning without threshhold, adjust digit test function" />
-    <option name="LAST_COMMIT_MESSAGE" value="added learning without threshhold, adjust digit test function" />
+    <MESSAGE value="new weight matrix" />
+    <option name="LAST_COMMIT_MESSAGE" value="new weight matrix" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -637,16 +653,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/XOR.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="578">
-          <caret line="36" column="61" lean-forward="false" selection-start-line="36" selection-start-column="61" selection-end-line="36" selection-end-column="61" />
-          <folding>
-            <element signature="e#0#45#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/neuronalNetwork/neuronalNetwork.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1768">
@@ -657,48 +663,58 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/digitRecognitionTester.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
+        <state relative-caret-position="1700">
           <caret line="103" column="44" lean-forward="false" selection-start-line="103" selection-start-column="44" selection-end-line="103" selection-end-column="44" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/neuronalNetwork/dynamicNeuronalNetwork.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="255" column="40" lean-forward="false" selection-start-line="255" selection-start-column="40" selection-end-line="255" selection-end-column="40" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/digitGallery.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="407">
+        <state relative-caret-position="1241">
           <caret line="80" column="1" lean-forward="false" selection-start-line="80" selection-start-column="1" selection-end-line="85" selection-end-column="31" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/XOR.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="476">
+          <caret line="30" column="18" lean-forward="false" selection-start-line="30" selection-start-column="18" selection-end-line="30" selection-end-column="18" />
+          <folding>
+            <element signature="e#0#45#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_results.txt">
+      <provider editor-type-id="LargeFileEditor">
+        <state relative-caret-position="-106279">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="4" column="31" lean-forward="false" selection-start-line="4" selection-start-column="31" selection-end-line="4" selection-end-column="31" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/digitRecognizer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
-          <caret line="23" column="18" lean-forward="false" selection-start-line="23" selection-start-column="18" selection-end-line="23" selection-end-column="18" />
+        <state relative-caret-position="238">
+          <caret line="17" column="27" lean-forward="false" selection-start-line="17" selection-start-column="27" selection-end-line="17" selection-end-column="27" />
           <folding>
             <element signature="e#0#18#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test_results.txt">
+    <entry file="file://$PROJECT_DIR$/neuronalNetwork/dynamicNeuronalNetwork.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="532">
-          <caret line="7500" column="45" lean-forward="false" selection-start-line="7500" selection-start-column="45" selection-end-line="7500" selection-end-column="45" />
+        <state relative-caret-position="17">
+          <caret line="278" column="44" lean-forward="false" selection-start-line="278" selection-start-column="44" selection-end-line="278" selection-end-column="44" />
           <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="LargeFileEditor">
-        <state relative-caret-position="-106279">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
         </state>
       </provider>
     </entry>
