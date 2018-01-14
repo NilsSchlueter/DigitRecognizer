@@ -18,6 +18,7 @@ print("Network created!")
 #print(weight_matrix.shape)
 
 
+
 network2 = NeuronalNetwork(
     layers=[784, 500, 10],
     fnc_activate_type="tanH",
