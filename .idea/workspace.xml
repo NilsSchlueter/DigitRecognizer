@@ -2,9 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="78968bb0-2c11-4875-9dec-b1be5f503939" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/digitRecognizer.py" afterPath="$PROJECT_DIR$/digitRecognizer.py" />
-      <change beforePath="$PROJECT_DIR$/weight_matrix_BP_with_8000_Iterations.npy" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/digitRecognizer.iml" afterPath="$PROJECT_DIR$/.idea/digitRecognizer.iml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/misc.xml" afterPath="$PROJECT_DIR$/.idea/misc.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/digitRecognitionGUI.py" afterPath="$PROJECT_DIR$/digitRecognitionGUI.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/digitRecognizer.py" afterPath="$PROJECT_DIR$/digitRecognizer.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/neuronalNetwork/neuronalNetwork.py" afterPath="$PROJECT_DIR$/neuronalNetwork/neuronalNetwork.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -14,42 +17,22 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/DigitRecognizer$XOR.coverage" NAME="XOR Coverage Results" MODIFIED="1515774602010" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/DigitRecognizer$DigitDraw.coverage" NAME="DigitDraw Coverage Results" MODIFIED="1515844055132" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/DigitRecognizer$DigitNetwork.coverage" NAME="DigitNetwork Coverage Results" MODIFIED="1515842568063" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/DigitRecognizer$DigitTest.coverage" NAME="DigitTest Coverage Results" MODIFIED="1515778539535" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/DigitRecognizer$XOR.coverage" NAME="XOR Coverage Results" MODIFIED="1515774602010" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/DigitRecognizer$DigitNetwork.coverage" NAME="DigitNetwork Coverage Results" MODIFIED="1515842568063" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/DigitRecognizer$DigitDraw.coverage" NAME="DigitDraw Coverage Results" MODIFIED="1515844055132" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="dynamicNeuronalNetwork.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/neuronalNetwork/dynamicNeuronalNetwork.py">
+      <file leaf-file-name="digitRecognitionGUI.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/digitRecognitionGUI.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="255" column="40" lean-forward="false" selection-start-line="255" selection-start-column="40" selection-end-line="255" selection-end-column="40" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="digitRecognizer.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/digitRecognizer.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="373">
-              <caret line="23" column="18" lean-forward="false" selection-start-line="23" selection-start-column="18" selection-end-line="23" selection-end-column="18" />
+            <state relative-caret-position="255">
+              <caret line="90" column="38" lean-forward="false" selection-start-line="90" selection-start-column="38" selection-end-line="90" selection-end-column="38" />
               <folding>
-                <element signature="e#0#18#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="XOR.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/XOR.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="578">
-              <caret line="36" column="61" lean-forward="false" selection-start-line="36" selection-start-column="61" selection-end-line="36" selection-end-column="61" />
-              <folding>
-                <element signature="e#0#45#0" expanded="true" />
+                <element signature="e#0#20#0" expanded="true" />
+                <element signature="e#4769#5682#0" expanded="false" />
+                <element signature="e#5741#6247#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -58,29 +41,11 @@
       <file leaf-file-name="digitGallery.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/digitGallery.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="407">
-              <caret line="80" column="1" lean-forward="false" selection-start-line="80" selection-start-column="1" selection-end-line="85" selection-end-column="31" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="digitRecognitionTester.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/digitRecognitionTester.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="527">
-              <caret line="103" column="44" lean-forward="false" selection-start-line="103" selection-start-column="44" selection-end-line="103" selection-end-column="44" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="test_results.txt" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/test_results.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="532">
-              <caret line="7500" column="45" lean-forward="false" selection-start-line="7500" selection-start-column="45" selection-end-line="7500" selection-end-column="45" />
-              <folding />
+            <state relative-caret-position="-209">
+              <caret line="81" column="3" lean-forward="false" selection-start-line="81" selection-start-column="3" selection-end-line="81" selection-end-column="3" />
+              <folding>
+                <element signature="e#0#43#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -88,9 +53,56 @@
       <file leaf-file-name="neuronalNetwork.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/neuronalNetwork/neuronalNetwork.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1768">
-              <caret line="106" column="63" lean-forward="false" selection-start-line="106" selection-start-column="63" selection-end-line="106" selection-end-column="63" />
-              <folding />
+            <state relative-caret-position="369">
+              <caret line="352" column="0" lean-forward="true" selection-start-line="352" selection-start-column="0" selection-end-line="361" selection-end-column="17" />
+              <folding>
+                <element signature="e#341#2942#0" expanded="false" />
+                <element signature="e#341#503#1" expanded="false" />
+                <element signature="e#1536#2328#0" expanded="false" />
+                <element signature="e#1674#1927#0" expanded="false" />
+                <element signature="e#1733#1927#0" expanded="false" />
+                <element signature="e#1996#2328#0" expanded="false" />
+                <element signature="e#2108#2328#0" expanded="false" />
+                <element signature="e#2400#2499#0" expanded="false" />
+                <element signature="e#3004#5919#0" expanded="false" />
+                <element signature="e#3004#3076#1" expanded="false" />
+                <element signature="e#3103#5795#0" expanded="false" />
+                <element signature="e#3243#5795#0" expanded="false" />
+                <element signature="e#3380#5710#0" expanded="false" />
+                <element signature="e#3887#4318#0" expanded="false" />
+                <element signature="e#4147#4296#0" expanded="false" />
+                <element signature="e#4459#4909#0" expanded="false" />
+                <element signature="e#4598#4791#0" expanded="false" />
+                <element signature="e#5186#5692#0" expanded="false" />
+                <element signature="e#5843#5919#0" expanded="false" />
+                <element signature="e#8408#9286#0" expanded="false" />
+                <element signature="e#8709#9259#0" expanded="false" />
+                <element signature="e#8886#9259#0" expanded="false" />
+                <element signature="e#8936#9137#0" expanded="false" />
+                <element signature="e#9338#9410#0" expanded="false" />
+                <element signature="e#9470#11303#0" expanded="false" />
+                <element signature="e#9586#11303#0" expanded="false" />
+                <element signature="e#10168#10301#0" expanded="false" />
+                <element signature="e#10595#11303#0" expanded="false" />
+                <element signature="e#10639#11303#0" expanded="false" />
+                <element signature="e#11348#13005#0" expanded="false" />
+                <element signature="e#11400#13005#0" expanded="false" />
+                <element signature="e#11728#11809#0" expanded="false" />
+                <element signature="e#11871#12004#0" expanded="false" />
+                <element signature="e#12297#13005#0" expanded="false" />
+                <element signature="e#12341#13005#0" expanded="false" />
+                <element signature="e#13076#13187#0" expanded="false" />
+                <element signature="e#13076#13134#1" expanded="false" />
+                <element signature="e#13237#13353#0" expanded="false" />
+                <element signature="e#13410#13719#0" expanded="false" />
+                <element signature="e#13410#13471#1" expanded="false" />
+                <element signature="e#13767#14014#0" expanded="false" />
+                <element signature="e#13767#13811#1" expanded="false" />
+                <element signature="e#14061#14438#0" expanded="false" />
+                <element signature="e#14061#14104#1" expanded="false" />
+                <element signature="e#14483#14565#0" expanded="false" />
+                <element signature="e#14483#14523#1" expanded="false" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -125,6 +137,8 @@
       <find>print</find>
       <find>tresh</find>
       <find>test</find>
+      <find>neuronal</find>
+      <find>LABEL</find>
     </findStrings>
     <replaceStrings>
       <replace>threshold</replace>
@@ -167,9 +181,10 @@
         <option value="$PROJECT_DIR$/neuronalNetwork/dynamicNeuronalNetwork.py" />
         <option value="$PROJECT_DIR$/XOR.py" />
         <option value="$PROJECT_DIR$/digitGallery.py" />
-        <option value="$PROJECT_DIR$/neuronalNetwork/neuronalNetwork.py" />
         <option value="$PROJECT_DIR$/digitRecognitionTester.py" />
         <option value="$PROJECT_DIR$/digitRecognizer.py" />
+        <option value="$PROJECT_DIR$/neuronalNetwork/neuronalNetwork.py" />
+        <option value="$PROJECT_DIR$/digitRecognitionGUI.py" />
       </list>
     </option>
   </component>
@@ -180,8 +195,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="2008" />
-    <option name="y" value="34" />
+    <option name="x" value="671" />
+    <option name="y" value="403" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
   </component>
@@ -201,6 +216,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -213,12 +229,16 @@
               <item name="DigitRecognizer" type="462c0819:PsiDirectoryNode" />
               <item name="neuronalNetwork" type="462c0819:PsiDirectoryNode" />
             </path>
+            <path>
+              <item name="DigitRecognizer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="DigitRecognizer" type="462c0819:PsiDirectoryNode" />
+              <item name="ressources" type="462c0819:PsiDirectoryNode" />
+            </path>
           </expand>
           <select />
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="Scratches" />
       <pane id="PackagesPane" />
     </panes>
   </component>
@@ -228,7 +248,7 @@
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/digitRecognitionTester.py" />
-    <property name="SearchEverywhereHistoryKey" value="neuronal&#9;FILE&#9;file://C:/Development/uni/7. Semester/DigitRecognizer/neuronalNetwork/neuronalNetwork.py&#10;weight&#9;FILE&#9;file://C:/Development/uni/7. Semester/DigitRecognizer/weight_matrix_evolution.txt&#10;test&#9;FILE&#9;file://C:/Development/uni/7. Semester/DigitRecognizer/test_results.txt&#10;netw&#9;null&#9;null" />
+    <property name="SearchEverywhereHistoryKey" value="neuronalNetw&#9;FILE&#9;file://C:/Development/uni/7. Semester/DigitRecognizer/neuronalNetwork/neuronalNetwork.py&#10;neuronal&#9;FILE&#9;file://C:/Development/uni/7. Semester/DigitRecognizer/neuronalNetwork/neuronalNetwork.py&#10;weight&#9;FILE&#9;file://C:/Development/uni/7. Semester/DigitRecognizer/weight_matrix_evolution.txt&#10;test&#9;FILE&#9;file://C:/Development/uni/7. Semester/DigitRecognizer/test_results.txt&#10;netw&#9;null&#9;null" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -272,7 +292,6 @@
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
     </configuration>
     <configuration name="DigitNetwork" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -291,7 +310,6 @@
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
     </configuration>
     <configuration name="DigitTest" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -310,7 +328,6 @@
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
     </configuration>
     <configuration name="XOR" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -329,7 +346,6 @@
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
     </configuration>
     <configuration default="true" type="Applet" factoryName="Applet">
       <option name="HTML_USED" value="false" />
@@ -506,22 +522,20 @@
     <option name="totallyTimeSpent" value="15000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1912" y="-8" width="1874" height="1096" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17110874" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32960325" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32960325" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.325" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" x="1949" y="24" width="1876" height="990" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16953714" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
-      <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.325" sideWeight="0.5" order="12" side_tool="false" content_ui="tabs" x="1949" y="24" width="1876" height="990" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -529,14 +543,15 @@
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Statistic" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32934782" sideWeight="0.49573562" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -558,12 +573,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <option name="time" value="3" />
+      <option name="time" value="4" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/neuronalNetwork/neuronalNetwork.py" />
     <entry file="file://$PROJECT_DIR$/test.py" />
     <entry file="file://$PROJECT_DIR$/neuronalNetwork/neuronalNetwork.py" />
     <entry file="file://$PROJECT_DIR$/test.py" />
@@ -595,7 +609,6 @@
     <entry file="file://$PROJECT_DIR$/__init__.py" />
     <entry file="file://$PROJECT_DIR$/neuronalNetwork/helpers.py" />
     <entry file="file://$PROJECT_DIR$/book_ex1.py" />
-    <entry file="file://$PROJECT_DIR$/ressources/test.csv" />
     <entry file="file://$PROJECT_DIR$/test.py" />
     <entry file="file://$PROJECT_DIR$/csvReader/csvImporter.py" />
     <entry file="file://$PROJECT_DIR$/ressources/train.csv" />
@@ -642,22 +655,14 @@
         <state relative-caret-position="578">
           <caret line="36" column="61" lean-forward="false" selection-start-line="36" selection-start-column="61" selection-end-line="36" selection-end-column="61" />
           <folding>
-            <element signature="e#0#45#0" expanded="true" />
+            <element signature="e#0#45#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/neuronalNetwork/neuronalNetwork.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1768">
-          <caret line="106" column="63" lean-forward="false" selection-start-line="106" selection-start-column="63" selection-end-line="106" selection-end-column="63" />
-          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/digitRecognitionTester.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="527">
+        <state relative-caret-position="1700">
           <caret line="103" column="44" lean-forward="false" selection-start-line="103" selection-start-column="44" selection-end-line="103" selection-end-column="44" />
           <folding />
         </state>
@@ -665,40 +670,117 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/neuronalNetwork/dynamicNeuronalNetwork.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
+        <state relative-caret-position="4284">
           <caret line="255" column="40" lean-forward="false" selection-start-line="255" selection-start-column="40" selection-end-line="255" selection-end-column="40" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/digitGallery.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="407">
-          <caret line="80" column="1" lean-forward="false" selection-start-line="80" selection-start-column="1" selection-end-line="85" selection-end-column="31" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/digitRecognizer.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="373">
+        <state relative-caret-position="391">
           <caret line="23" column="18" lean-forward="false" selection-start-line="23" selection-start-column="18" selection-end-line="23" selection-end-column="18" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#0#18#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/test_results.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="532">
-          <caret line="7500" column="45" lean-forward="false" selection-start-line="7500" selection-start-column="45" selection-end-line="7500" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
       <provider editor-type-id="LargeFileEditor">
         <state relative-caret-position="-106279">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="793">
+          <caret line="1617" column="45" lean-forward="false" selection-start-line="1617" selection-start-column="45" selection-end-line="1617" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ressources/test.csv">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1224">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/digitGallery.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-209">
+          <caret line="81" column="3" lean-forward="false" selection-start-line="81" selection-start-column="3" selection-end-line="81" selection-end-column="3" />
+          <folding>
+            <element signature="e#0#43#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/neuronalNetwork/neuronalNetwork.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="369">
+          <caret line="352" column="0" lean-forward="true" selection-start-line="352" selection-start-column="0" selection-end-line="361" selection-end-column="17" />
+          <folding>
+            <element signature="e#341#2942#0" expanded="false" />
+            <element signature="e#341#503#1" expanded="false" />
+            <element signature="e#1536#2328#0" expanded="false" />
+            <element signature="e#1674#1927#0" expanded="false" />
+            <element signature="e#1733#1927#0" expanded="false" />
+            <element signature="e#1996#2328#0" expanded="false" />
+            <element signature="e#2108#2328#0" expanded="false" />
+            <element signature="e#2400#2499#0" expanded="false" />
+            <element signature="e#3004#5919#0" expanded="false" />
+            <element signature="e#3004#3076#1" expanded="false" />
+            <element signature="e#3103#5795#0" expanded="false" />
+            <element signature="e#3243#5795#0" expanded="false" />
+            <element signature="e#3380#5710#0" expanded="false" />
+            <element signature="e#3887#4318#0" expanded="false" />
+            <element signature="e#4147#4296#0" expanded="false" />
+            <element signature="e#4459#4909#0" expanded="false" />
+            <element signature="e#4598#4791#0" expanded="false" />
+            <element signature="e#5186#5692#0" expanded="false" />
+            <element signature="e#5843#5919#0" expanded="false" />
+            <element signature="e#8408#9286#0" expanded="false" />
+            <element signature="e#8709#9259#0" expanded="false" />
+            <element signature="e#8886#9259#0" expanded="false" />
+            <element signature="e#8936#9137#0" expanded="false" />
+            <element signature="e#9338#9410#0" expanded="false" />
+            <element signature="e#9470#11303#0" expanded="false" />
+            <element signature="e#9586#11303#0" expanded="false" />
+            <element signature="e#10168#10301#0" expanded="false" />
+            <element signature="e#10595#11303#0" expanded="false" />
+            <element signature="e#10639#11303#0" expanded="false" />
+            <element signature="e#11348#13005#0" expanded="false" />
+            <element signature="e#11400#13005#0" expanded="false" />
+            <element signature="e#11728#11809#0" expanded="false" />
+            <element signature="e#11871#12004#0" expanded="false" />
+            <element signature="e#12297#13005#0" expanded="false" />
+            <element signature="e#12341#13005#0" expanded="false" />
+            <element signature="e#13076#13187#0" expanded="false" />
+            <element signature="e#13076#13134#1" expanded="false" />
+            <element signature="e#13237#13353#0" expanded="false" />
+            <element signature="e#13410#13719#0" expanded="false" />
+            <element signature="e#13410#13471#1" expanded="false" />
+            <element signature="e#13767#14014#0" expanded="false" />
+            <element signature="e#13767#13811#1" expanded="false" />
+            <element signature="e#14061#14438#0" expanded="false" />
+            <element signature="e#14061#14104#1" expanded="false" />
+            <element signature="e#14483#14565#0" expanded="false" />
+            <element signature="e#14483#14523#1" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/digitRecognitionGUI.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="90" column="38" lean-forward="false" selection-start-line="90" selection-start-column="38" selection-end-line="90" selection-end-column="38" />
+          <folding>
+            <element signature="e#0#20#0" expanded="true" />
+            <element signature="e#4769#5682#0" expanded="false" />
+            <element signature="e#5741#6247#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

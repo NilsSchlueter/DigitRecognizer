@@ -4,6 +4,7 @@ import numpy as np
 from helpers.csvImporter import CSVImporter
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
+from matplotlib import colors
 from tkinter import ttk
 from tkinter import *
 from neuronalNetwork.neuronalNetwork import NeuronalNetwork
@@ -44,12 +45,63 @@ class digitRecognitionGUI:
         notebook.pack(expand=1, fill="both")
 
         # Fill each Tab
-        self.__create_overview_layout()
         self.__create_visualizer_layout()
         self.__create_tester_layout()
 
-    def __create_overview_layout(self):
-        Label(self.frame_overview, text="OVERVIEW").pack()
+    def __create_overview_layout(self, overview_data):
+        rootFrame = Frame(self.frame_overview)
+
+        data = np.zeros((10, 10))
+
+        no_classification = 0
+        correct_classification = 0
+        for i in range(len(overview_data)):
+
+            if overview_data[i][0] >= 0 and overview_data[i][1] >= 0 and overview_data[i][0] < 10 and overview_data[i][1] < 10:
+                # Rows = target, cols = actual
+                data[overview_data[i][0]][overview_data[i][1]] += 1
+
+                if overview_data[i][0] == overview_data[i][1]:
+                    correct_classification += 1
+            else:
+                no_classification += 1
+
+
+        str_result = "Richtig klassifiziert: %s von %s (%s%%) | Nicht klassifiziert: %s" \
+                     % (correct_classification, len(overview_data), (correct_classification / len(overview_data)) * 100, no_classification)
+        Label(rootFrame, text=str_result).pack(side=BOTTOM)
+
+        # Creating the figure
+        figure = plt.Figure(figsize=(7, 7), dpi=100)
+        graph = figure.add_subplot(111)
+
+        major_ticks = np.arange(0, 10, 1)
+        minor_ticks = np.arange(0, 10, 0.5)
+
+        graph.set_xticks(major_ticks)
+        graph.set_xticks(minor_ticks, minor=True)
+        graph.set_yticks(major_ticks)
+        graph.set_yticks(minor_ticks, minor=True)
+
+        graph.set_xticklabels(major_ticks)
+        graph.set_yticklabels(major_ticks)
+
+        # Configure color
+        cmap = plt.cm.RdYlGn
+        cmap.set_under(color="lightgray")
+        imgplot = graph.imshow(data, cmap=cmap, vmin=1)
+
+        # Add text to the graph
+        for i in range(10):
+            for j in range(10):
+                graph.text(-0.2 + i, 0.1 + j, data[j][i])
+
+
+        canvas = FigureCanvasTkAgg(figure, rootFrame)
+        canvas.show()
+        canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=True)
+
+        rootFrame.pack()
 
     def __create_visualizer_layout(self):
         rootFrame = Frame(self.frame_visualizer)
@@ -85,7 +137,6 @@ class digitRecognitionGUI:
         result_label.pack(side=BOTTOM)
 
         rootFrame.pack()
-        rootFrame.mainloop()
 
     def __create_tester_layout(self):
 
@@ -124,12 +175,7 @@ class digitRecognitionGUI:
         value = widget.get(selection[0])
 
         # Test the data
-        network = NeuronalNetwork(
-            layers=[784, 20, 10],
-            weight_matrix=self.weight_matrix,
-            fnc_activate_type="log"
-        )
-        result = network.test_single_digit(self.testData[value])
+        result = self.network.test_single_digit(self.testData[value])
 
         # Turn output vector into digit
         resultDigit = -1
@@ -223,6 +269,14 @@ class digitRecognitionGUI:
     def load_matrix(self):
         file = filedialog.askopenfilename(title="Weight Matrix laden (*.np Datei)")
         self.weight_matrix = np.load(file)
+        self.network = NeuronalNetwork(
+            layers=[784, 20, 10],
+            weight_matrix=self.weight_matrix,
+            fnc_activate_type="log"
+        )
+        str, data = self.network.test(self.testData)
+
+        self.__create_overview_layout(data)
 
 root = Tk()
 app = digitRecognitionGUI(root)
