@@ -96,7 +96,11 @@ class NeuronalNetwork:
                         # Calculate output neurons with treshold
                         if k >= (self.numHiddenNeurons + self.numInputNeurons):
                             index = k - self.numHiddenNeurons - self.numInputNeurons
-                            self.output[index] = 1 if self.neurons[k] > self.treshold else 0
+                            if self.treshold is not None:
+                                self.output[k - self.numHiddenNeurons - self.numInputNeurons] = 1 if self.neurons[
+                                                                                                         k] > self.treshold else 0
+                            else:
+                                self.output[k - self.numHiddenNeurons - self.numInputNeurons] = self.neurons[k]
 
                     # Calculate output neurons with treshold
                     if k >= (self.numHiddenNeurons + self.numInputNeurons):
@@ -360,8 +364,10 @@ class NeuronalNetwork:
 
     def __vector_to_digit(self, vector):
 
-        digit = 0
+        resultDigit = -1
+        max_val = 0
         for i in range(len(vector)):
-            if vector[i] != 0:
-                digit += i
-        return digit
+            if vector[i] > max_val:
+                max_val = vector[i]
+                resultDigit = i
+        return resultDigit

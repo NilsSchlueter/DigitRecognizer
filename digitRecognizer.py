@@ -9,7 +9,7 @@ trainingData = csvImporter.import_training_file("ressources/train.csv")
 testData = csvImporter.import_training_file("ressources/test.csv")
 
 # Create simple training and test data
-trainingData1 = trainingData[:10]
+trainingData1 = trainingData[:100]
 testData1 = trainingData[2000:3500]
 
 # create network
@@ -18,15 +18,14 @@ print("Network created!")
 #print(weight_matrix.shape)
 
 
-
 network2 = NeuronalNetwork(
-    layers=[784, 500, 10],
+    layers=[784, 40, 10],
     fnc_activate_type="tanH",
-    learn_rate=0.1,
-
+    learn_rate=0.03,
     fnc_learn_type="ERS",
-    rnd_values_low=-0.3,
-    rnd_values_high=0.3
+    rnd_values_low=-1,
+    rnd_values_high=1,
+    number_epochs=10
 )
 network2.train(training_data=trainingData1, max_iterations=100)
 network2.test(test_data=testData1)

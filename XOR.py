@@ -24,14 +24,14 @@ testData = [
 
 
 network = NeuronalNetwork(
-    layers=[2, 3, 1],
-    fnc_learn_type="BP",
+    layers=[2, 100, 1],
+    fnc_learn_type="ERS",
     fnc_activate_type="log",
     weight_matrix=None,
-    learn_rate=0.9,
-
-    rnd_values_low=-1.0,
-    rnd_values_high=1.0
+    learn_rate=0.08,
+    rnd_values_low=-0.3,
+    rnd_values_high=0.3,
+    number_epochs=10000
 )
 
 network.train(training_data=trainingData, max_iterations=1000)

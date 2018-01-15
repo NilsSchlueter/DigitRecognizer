@@ -14,8 +14,7 @@ class digitRecognitionGUI:
 
     def __init__(self, master):
         self.master = master
-        master.minsize(width=600, height=600)
-        master.maxsize(width=600, height=600)
+        master.minsize(width=800, height=800)
 
         # Load the test Data from a csv File
         importer = CSVImporter()
@@ -58,6 +57,8 @@ class digitRecognitionGUI:
 
         no_classification = 0
         correct_classification = 0
+        sums = np.zeros((10, 1))
+        sums_correct = np.zeros((10, 1))
         for i in range(len(overview_data)):
 
             if overview_data[i][0] >= 0 and overview_data[i][1] >= 0 and overview_data[i][0] < 10 and overview_data[i][1] < 10:
@@ -66,6 +67,9 @@ class digitRecognitionGUI:
 
                 if overview_data[i][0] == overview_data[i][1]:
                     correct_classification += 1
+                    sums_correct[overview_data[i][0]] += 1
+
+                sums[overview_data[i][0]] += 1
             else:
                 no_classification += 1
 
@@ -90,19 +94,24 @@ class digitRecognitionGUI:
         # Configure color
         cmap = plt.cm.RdYlGn
         cmap.set_under(color="lightgray")
-        imgplot = graph.imshow(data, cmap=cmap, vmin=1)
+        imgplot = graph.imshow(data, cmap=cmap, vmin=1.1)
 
         # Add text to the graph
         for i in range(10):
             for j in range(10):
-                graph.text(-0.2 + i, 0.1 + j, data[j][i])
+                graph.text(-0.2 + i, 0.1 + j, int(data[j][i]))
 
+
+        # Add sums to the right side
+        for i in range(10):
+            str = "%s / %s" % (int(sums_correct[i][0]).__str__(), int(sums[i][0]).__str__())
+            graph.text(10, i, str)
 
         canvas = FigureCanvasTkAgg(figure, root_frame)
         canvas.show()
         canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=True)
 
-        root_frame.pack()
+        root_frame.pack(fill="both", expand=True)
 
     def __create_visualizer_layout(self):
         rootFrame = Frame(self.frame_visualizer)
@@ -134,7 +143,7 @@ class digitRecognitionGUI:
         self.leftFrame_visualizer.pack(side=LEFT, expand=True, fill="both")
 
         # Dummy data
-        self.visualize(data=np.zeros((28,28)), result="")
+        self.visualize(data=np.zeros((28, 28)), result="")
 
         # Create result label
         result_label = Label(self.rightFrame_visualizer, textvariable=self.result_str)
@@ -258,9 +267,9 @@ class digitRecognitionGUI:
         file = filedialog.askopenfilename(title="Weight Matrix laden (*.np Datei)")
         self.weight_matrix = np.load(file)
         self.network = NeuronalNetwork(
-            layers=[784, 20, 10],
+            layers=[784, 40, 10],
             weight_matrix=self.weight_matrix,
-            fnc_activate_type="log"
+            fnc_activate_type="tanH"
         )
         str, data = self.network.test(self.testData)
 
