@@ -20,13 +20,14 @@ weight_matrix = np.load("weight_matrix_final_np.npy")
 
 
 network2 = NeuronalNetwork(
-    layers=[784, 20, 10],
+    layers=[784, 80, 10],
     fnc_activate_type="log",
-    learn_rate=0.1,
-    weight_matrix=weight_matrix,
-    fnc_learn_type="BP",
-    rnd_values_low=-1.0,
-    rnd_values_high=1.0
+    learn_rate=0.04,
+    weight_matrix=None,
+    fnc_learn_type="ERS",
+    rnd_values_low=-0.3,
+    rnd_values_high=0.3,
+    number_epochs=2
 )
 network2.train(training_data=trainingData, max_iterations=40000)
 network2.test(test_data=testData1)
