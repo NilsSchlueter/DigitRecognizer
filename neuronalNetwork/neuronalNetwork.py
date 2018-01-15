@@ -140,8 +140,11 @@ class NeuronalNetwork:
 
         resultStr = ""
 
+        result_overview = []
         count = 0
         for i in range(len(test_data)):
+
+            result = []
 
             increase_count = True
 
@@ -163,7 +166,6 @@ class NeuronalNetwork:
                     else:
                         self.output[k - self.numHiddenNeurons - self.numInputNeurons] = self.neurons[k]
 
-
             out = np.zeros(self.numOutputNeurons)
             resultDigit = -1
             networkDigit = 0
@@ -179,12 +181,13 @@ class NeuronalNetwork:
                     if output_vector[l] == 1:
                         resultDigit = l
 
-
-
             if networkDigit == resultDigit:
                 count += 1
 
             resultStr += "Outputvector: %s Targetvector: %s Resultvector: %s\n" % (out, output_vector, self.output)
+            result.append(self.__vector_to_digit(output_vector))
+            result.append(self.__vector_to_digit(self.output))
+            result_overview.append(result)
 
         percent = count/len(test_data)
         resultStr += "%s wurden erfolgreich erkannt" % (percent)
@@ -193,7 +196,7 @@ class NeuronalNetwork:
         f_final.write(resultStr)
         f_final.close()
 
-        return resultStr
+        return resultStr, result_overview
 
     def test_single_digit(self, digit_data):
 
@@ -354,3 +357,11 @@ class NeuronalNetwork:
         Output function.
         """
         return self.__fnc_activate(index)
+
+    def __vector_to_digit(self, vector):
+
+        digit = 0
+        for i in range(len(vector)):
+            if vector[i] != 0:
+                digit += i
+        return digit
