@@ -5,7 +5,7 @@ from random import randint
 class NeuronalNetwork:
 
     def __init__(self, layers, weight_matrix=None, fnc_propagate_type=None, fnc_activate_type=None, fnc_learn_type="BP",
-                 fnc_output_type=None, treshold=0.5, learn_rate=0.5, rnd_values_low=-1.0, rnd_values_high=1.0, number_epochs=1):
+                 fnc_output_type=None, treshold=None, learn_rate=0.5, rnd_values_low=-1.0, rnd_values_high=1.0, number_epochs=1):
 
         """
         Inits a new Neuronal Network.
@@ -217,6 +217,7 @@ class NeuronalNetwork:
                                                                                              k] > self.treshold else 0
                 else:
                     self.output[k - self.numHiddenNeurons - self.numInputNeurons] = self.neurons[k]
+        
         return self.output
 
     def __fnc_learn(self, output_vector):
