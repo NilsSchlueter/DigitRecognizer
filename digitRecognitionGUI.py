@@ -236,12 +236,7 @@ class digitRecognitionGUI:
         self.test_img({"input": colors})
 
     def test_img(self, testData):
-        network = NeuronalNetwork(
-            layers=[784, 20, 10],
-            weight_matrix=self.weight_matrix,
-            fnc_activate_type="log"
-        )
-        result = network.test_single_digit(testData)
+        result = self.network.test_single_digit(testData)
         print(result)
 
         resultDigit = -1
@@ -267,13 +262,17 @@ class digitRecognitionGUI:
         file = filedialog.askopenfilename(title="Weight Matrix laden (*.np Datei)")
         self.weight_matrix = np.load(file)
         self.network = NeuronalNetwork(
-            layers=[784, 40, 10],
+            layers=[784, 20, 10],
             weight_matrix=self.weight_matrix,
-            fnc_activate_type="tanH"
+            fnc_activate_type="log"
         )
         str, data = self.network.test(self.testData)
 
         self.__create_overview_layout(data)
+
+    @staticmethod
+    def __softmax(data):
+        return np.exp(data) / np.sum(np.exp(data))
 
     @staticmethod
     def __vector_to_digit(vector):
