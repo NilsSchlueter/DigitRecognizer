@@ -191,6 +191,7 @@ class NeuronalNetwork:
             resultStr += "Outputvector: %s Targetvector: %s Resultvector: %s\n" % (out, output_vector, self.output)
             result.append(self.__vector_to_digit(output_vector))
             result.append(self.__vector_to_digit(self.output))
+            result.append(np.amax(self.__softmax(self.output)))
             result_overview.append(result)
 
         percent = count/len(test_data)
@@ -221,8 +222,9 @@ class NeuronalNetwork:
                                                                                              k] > self.treshold else 0
                 else:
                     self.output[k - self.numHiddenNeurons - self.numInputNeurons] = self.neurons[k]
-        
-        return self.output
+
+        softmax = self.__softmax(self.output)
+        return [np.argmax(softmax), np.amax(softmax)]
 
     def __fnc_learn(self, output_vector):
         self.__fnc_learn_output(output_vector)
@@ -315,6 +317,10 @@ class NeuronalNetwork:
             return 0
         else:
             return 1
+
+    @staticmethod
+    def __softmax(data):
+        return np.exp(data) / np.sum(np.exp(data))
 
     def __derivative_activation(self, output):
         """

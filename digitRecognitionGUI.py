@@ -20,6 +20,9 @@ class digitRecognitionGUI:
         importer = CSVImporter()
         self.testData = importer.import_training_file("ressources/test.csv")
 
+        # Config
+        self.minProb = 0
+
         # Create the basic layout
         self.__create_layout()
 
@@ -50,73 +53,29 @@ class digitRecognitionGUI:
         self.__create_visualizer_layout()
         self.__create_tester_layout()
 
-    def __create_overview_layout(self, overview_data):
+    def __create_overview_layout(self):
         root_frame = Frame(self.frame_overview)
 
-        data = np.zeros((10, 10))
+        figure, str_result = self.__generate_overview_matrix()
+        self.overview_result_label = Label(root_frame, text=str_result).pack(side=BOTTOM)
 
-        no_classification = 0
-        correct_classification = 0
-        sums = np.zeros((10, 1))
-        sums_correct = np.zeros((10, 1))
-        for i in range(len(overview_data)):
+        self.overview_canvas = FigureCanvasTkAgg(figure, root_frame)
+        self.overview_canvas.show()
+        self.overview_canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=True)
 
-            if overview_data[i][0] >= 0 and overview_data[i][1] >= 0 and overview_data[i][0] < 10 and overview_data[i][1] < 10:
-                # Rows = target, cols = actual
-                data[overview_data[i][0]][overview_data[i][1]] += 1
-
-                if overview_data[i][0] == overview_data[i][1]:
-                    correct_classification += 1
-                    sums_correct[overview_data[i][0]] += 1
-
-                sums[overview_data[i][0]] += 1
-            else:
-                no_classification += 1
-
-
-        str_result = "Richtig klassifiziert: %s von %s (%s%%) | Nicht klassifiziert: %s" \
-                     % (correct_classification, len(overview_data), (correct_classification / len(overview_data)) * 100, no_classification)
-        Label(root_frame, text=str_result).pack(side=BOTTOM)
-
-        # Creating the figure
-        figure = plt.Figure(figsize=(7, 7), dpi=100)
-        graph = figure.add_subplot(111)
-
-        major_ticks = np.arange(0, 10, 1)
-        graph.set_xticks(major_ticks)
-        graph.set_yticks(major_ticks)
-        graph.set_xticklabels(major_ticks)
-        graph.set_yticklabels(major_ticks)
-
-        graph.set_xlabel("Predicted")
-        graph.set_ylabel("Target")
-
-        # Configure color
-        cmap = plt.cm.RdYlGn
-        cmap.set_under(color="lightgray")
-        imgplot = graph.imshow(data, cmap=cmap, vmin=1.1)
-
-        # Add text to the graph
-        for i in range(10):
-            for j in range(10):
-                graph.text(-0.2 + i, 0.1 + j, int(data[j][i]))
-
-
-        # Add sums to the right side
-        for i in range(10):
-            str = "%s / %s" % (int(sums_correct[i][0]).__str__(), int(sums[i][0]).__str__())
-            graph.text(10, i, str)
-
-        canvas = FigureCanvasTkAgg(figure, root_frame)
-        canvas.show()
-        canvas.get_tk_widget().pack(side=TOP, fill=BOTH, expand=True)
+        configFrame = Frame(root_frame)
+        self.probScale = Scale(configFrame, from_=0, to=100, orient=HORIZONTAL, command=self.__update_min_prob)
+        self.probScale.set(self.minProb * 100)
+        self.probScale.pack(side=LEFT)
+        self.probBtn = Button(configFrame, text="Min. Wahrscheinlichkeit setzen", command=self.__update_prob).pack(side=RIGHT)
+        configFrame.pack()
 
         root_frame.pack(fill="both", expand=True)
 
     def __create_visualizer_layout(self):
-        rootFrame = Frame(self.frame_visualizer)
-        self.leftFrame_visualizer = Frame(rootFrame)
-        self.rightFrame_visualizer = Frame(rootFrame)
+        root_frame = Frame(self.frame_visualizer)
+        self.leftFrame_visualizer = Frame(root_frame)
+        self.rightFrame_visualizer = Frame(root_frame)
 
         self.figure_visualizer = plt.Figure(figsize=(5, 5), dpi=100)
         self.graph_visualizer = self.figure_visualizer.add_subplot(111)
@@ -143,24 +102,20 @@ class digitRecognitionGUI:
         self.leftFrame_visualizer.pack(side=LEFT, expand=True, fill="both")
 
         # Dummy data
-        self.visualize(data=np.zeros((28, 28)), result="")
+        self.visualize(data=np.zeros((28, 28)), result=["", ""])
 
         # Create result label
         result_label = Label(self.rightFrame_visualizer, textvariable=self.result_str)
-        result_label.config(font=("Courier", 44))
         result_label.pack(side=BOTTOM)
 
-        rootFrame.pack()
+        root_frame.pack(fill="both", expand=True)
 
     def __create_tester_layout(self):
 
         root_frame = Frame(self.frame_tester)
 
         # Canvas to draw on
-        self.canvas = Canvas(root_frame,
-                             width=28,
-                             height=28,
-                             bg="grey")
+        self.canvas = Canvas(root_frame, width=28, height=28, bg="grey")
         self.canvas.pack(expand=NO, fill=NONE, side=TOP)
         self.canvas.bind("<B1-Motion>", self.paint)
 
@@ -168,7 +123,7 @@ class digitRecognitionGUI:
         button_delete = Button(root_frame, text="Reset", command=self.reset)
         button_delete.pack(side=BOTTOM)
 
-        button_test = Button(root_frame, text="Testen", fg="red",command=self.get_img)
+        button_test = Button(root_frame, text="Testen", fg="red", command=self.get_img)
         button_test.pack(side=BOTTOM)
 
         # Digit Label
@@ -178,6 +133,63 @@ class digitRecognitionGUI:
         root_frame.pack()
         root_frame.mainloop()
 
+    def __generate_overview_matrix(self):
+        data = np.zeros((10, 10))
+
+        no_classification = 0
+        correct_classification = 0
+        sums = np.zeros((10, 1))
+        sums_correct = np.zeros((10, 1))
+        for i in range(len(self.overview_data)):
+
+            if self.overview_data[i][0] >= 0 and self.overview_data[i][1] >= 0 and self.overview_data[i][0] < 10 and self.overview_data[i][1] < 10 and self.overview_data[i][2] >= self.minProb:
+
+                # Rows = target, cols = actual
+                data[self.overview_data[i][0]][self.overview_data[i][1]] += 1
+
+                if self.overview_data[i][0] == self.overview_data[i][1]:
+                    correct_classification += 1
+                    sums_correct[self.overview_data[i][0]] += 1
+
+                    sums[self.overview_data[i][0]] += 1
+            else:
+                no_classification += 1
+
+        str_result = "Richtig klassifiziert: %s von %s (%s%%) | Nicht klassifiziert: %s" \
+                     % (correct_classification, len(self.overview_data),
+                        (correct_classification / len(self.overview_data)) * 100, no_classification)
+
+        # Creating the figure
+        figure = plt.Figure(figsize=(7, 7), dpi=100)
+        graph = figure.add_subplot(111)
+
+        major_ticks = np.arange(0, 10, 1)
+        graph.set_xticks(major_ticks)
+        graph.set_yticks(major_ticks)
+        graph.set_xticklabels(major_ticks)
+        graph.set_yticklabels(major_ticks)
+
+        graph.set_xlabel("Predicted")
+        graph.set_ylabel("Target")
+
+        # Configure color
+        cmap = plt.cm.RdYlGn
+        mask = np.ma.masked_where(data == 0, data)
+        cmap.set_bad(color="lightgrey")
+        imgplot = graph.imshow(mask, cmap=cmap)
+
+        # Add sums to the right side
+        for i in range(10):
+            str = "%s / %s" % (int(sums_correct[i][0]).__str__(), int(sums[i][0]).__str__())
+            graph.text(10, i, str)
+
+        # Add text to the graph
+        for i in range(10):
+            for j in range(10):
+                graph.text(-0.2 + i, 0.1 + j, int(data[j][i]))
+
+        return figure, str_result
+
     def __visualizer_item_selected(self, event):
         widget = event.widget
         selection = widget.curselection()
@@ -186,16 +198,7 @@ class digitRecognitionGUI:
 
         # Test the data
         result = self.network.test_single_digit(self.testData[int(float(string_parts[0]))])
-
-        # Turn output vector into digit
-        resultDigit = -1
-        max_val = 0
-        for i in range(len(result)):
-            if result[i] > max_val:
-                max_val = result[i]
-                resultDigit = i
-
-        self.visualize(data=self.testData[int(float(string_parts[0]))]["input"], result=resultDigit)
+        self.visualize(data=self.testData[int(float(string_parts[0]))]["input"], result=result)
 
     def visualize(self, data, result):
 
@@ -215,7 +218,7 @@ class digitRecognitionGUI:
         self.canvas_visualizer.get_tk_widget().pack(side=TOP, fill=BOTH, expand=True)
 
         # Add button and result label
-        self.result_str.set("Ergebis: " + result.__str__())
+        self.result_str.set("Ergebnis: %s | Wahrscheinlichkeit: %s" % (result[0], result[1]))
         self.rightFrame_visualizer.pack()
 
         self.frame_visualizer.update_idletasks()
@@ -237,16 +240,7 @@ class digitRecognitionGUI:
 
     def test_img(self, testData):
         result = self.network.test_single_digit(testData)
-        print(result)
-
-        resultDigit = -1
-        max_val = 0
-        for i in range(len(result)):
-            if result[i] > max_val:
-                max_val = result[i]
-                resultDigit = i
-
-        self.digit_label["text"] = ("Folgende Ziffer wurde erkannt: %s" % resultDigit)
+        self.digit_label["text"] = ("Folgende Ziffer wurde erkannt: %s | Wahrscheinlichkeit: %s" % (result[0], result[1]))
 
     def paint(self, event):
         python_green = "#000000"
@@ -258,21 +252,29 @@ class digitRecognitionGUI:
         self.canvas.delete("all")
         self.digit_label["text"] = ""
 
+    def __update_min_prob(self, event):
+        self.minProb = int(event) / 100
+
+    def __update_prob(self):
+
+        for widget in self.frame_overview.winfo_children():
+            widget.destroy()
+
+        self.__create_overview_layout()
+
+
     def load_matrix(self):
         file = filedialog.askopenfilename(title="Weight Matrix laden (*.np Datei)")
         self.weight_matrix = np.load(file)
         self.network = NeuronalNetwork(
-            layers=[784, 20, 10],
+            layers=[784, 40, 10],
             weight_matrix=self.weight_matrix,
             fnc_activate_type="log"
         )
         str, data = self.network.test(self.testData)
 
-        self.__create_overview_layout(data)
-
-    @staticmethod
-    def __softmax(data):
-        return np.exp(data) / np.sum(np.exp(data))
+        self.overview_data = data
+        self.__create_overview_layout()
 
     @staticmethod
     def __vector_to_digit(vector):
