@@ -24,17 +24,38 @@ class digitRecognitionGUI:
         self.minProb = 0
 
         # Create the basic layout
-        self.__create_layout()
+        self.__create_init_layout()
+        self.master.winfo_toplevel().title("DigitRecognizer GUI")
 
-    def __create_layout(self):
+    def __create_init_layout(self):
 
-        # Create file menu to load the weight matrix
-        menubar = Menu(self.master)
-        filemenu = Menu(menubar, tearoff=0)
-        filemenu.add_command(label="Open", command=self.load_matrix)
-        menubar.add_cascade(label="File", menu=filemenu)
+        self.init_frame = Frame(self.master)
 
-        self.master.config(menu=menubar)
+        # Configure input for the number of neurons in the hidden layer
+        neuron_frame = Frame(self.init_frame)
+        Label(neuron_frame, text="Anzahl der Neuronen im Hidden Layer: ").pack(side=LEFT)
+        self.neuron_number_input = Entry(neuron_frame)
+        self.neuron_number_input.insert(0, 20)
+        self.neuron_number_input.pack(side=RIGHT)
+        neuron_frame.pack()
+
+        # Configure input for the algorithm type
+        alg_frame = Frame(self.init_frame)
+        Label(alg_frame, text="Verwendeter Lernalgorithmus: ").pack(side=LEFT)
+        self.alg_var = StringVar(alg_frame)
+        algorithms = {"log", "tanH"}
+        self.alg_var.set("log")
+        self.alg_menu = OptionMenu(alg_frame, self.alg_var, *algorithms)
+        self.alg_menu.pack(side=RIGHT)
+        alg_frame.pack()
+
+        # Configure the file selection section
+        Button(self.init_frame, text="Datei auswählen", command=self.__load_matrix).pack()
+        self.init_frame.pack()
+
+    def __create_tabs(self):
+        print("Creating tbaas")
+        self.init_frame.destroy()
 
         # Create tabbed layout
         notebook = ttk.Notebook(self.master)
@@ -49,7 +70,8 @@ class digitRecognitionGUI:
 
         notebook.pack(expand=1, fill="both")
 
-        # Fill each Tab
+        # Fill the Tabs
+        self.__create_overview_layout()
         self.__create_visualizer_layout()
         self.__create_tester_layout()
 
@@ -102,7 +124,7 @@ class digitRecognitionGUI:
         self.leftFrame_visualizer.pack(side=LEFT, expand=True, fill="both")
 
         # Dummy data
-        self.visualize(data=np.zeros((28, 28)), result=["", ""])
+        self.__visualize(data=np.zeros((28, 28)), result=["", ""])
 
         # Create result label
         result_label = Label(self.rightFrame_visualizer, textvariable=self.result_str)
@@ -117,13 +139,13 @@ class digitRecognitionGUI:
         # Canvas to draw on
         self.canvas = Canvas(root_frame, width=28, height=28, bg="grey")
         self.canvas.pack(expand=NO, fill=NONE, side=TOP)
-        self.canvas.bind("<B1-Motion>", self.paint)
+        self.canvas.bind("<B1-Motion>", self.__paint)
 
         # Buttons to test or reset the image
-        button_delete = Button(root_frame, text="Reset", command=self.reset)
+        button_delete = Button(root_frame, text="Reset", command=self.__reset)
         button_delete.pack(side=BOTTOM)
 
-        button_test = Button(root_frame, text="Testen", fg="red", command=self.get_img)
+        button_test = Button(root_frame, text="Testen", fg="red", command=self.__get_img)
         button_test.pack(side=BOTTOM)
 
         # Digit Label
@@ -155,9 +177,12 @@ class digitRecognitionGUI:
             else:
                 no_classification += 1
 
-        str_result = "Richtig klassifiziert: %s von %s (%s%%) | Nicht klassifiziert: %s" \
+        str_result = "Richtig klassifiziert (alle Daten): %s von %s (%s%%) \n Richtig klassifiziert (nur klassifizierte): %s von %s (%s%%) \n Nicht klassifiziert: %s" \
                      % (correct_classification, len(self.overview_data),
-                        (correct_classification / len(self.overview_data)) * 100, no_classification)
+                        (correct_classification / len(self.overview_data)) * 100,
+                        correct_classification, len(self.overview_data) - no_classification,
+                        0 if len(self.overview_data) - no_classification == 0 else correct_classification / (len(self.overview_data) - no_classification),
+                        no_classification)
 
         # Creating the figure
         figure = plt.Figure(figsize=(7, 7), dpi=100)
@@ -198,9 +223,9 @@ class digitRecognitionGUI:
 
         # Test the data
         result = self.network.test_single_digit(self.testData[int(float(string_parts[0]))])
-        self.visualize(data=self.testData[int(float(string_parts[0]))]["input"], result=result)
+        self.__visualize(data=self.testData[int(float(string_parts[0]))]["input"], result=result)
 
-    def visualize(self, data, result):
+    def __visualize(self, data, result):
 
         # Create plot data
         imgData = np.array(data).reshape((28, 28))
@@ -224,7 +249,7 @@ class digitRecognitionGUI:
         self.frame_visualizer.update_idletasks()
         self.rightFrame_visualizer.update_idletasks()
 
-    def get_img(self):
+    def __get_img(self):
         width = int(self.canvas["width"])
         height = int(self.canvas["height"])
         colors = []
@@ -236,19 +261,19 @@ class digitRecognitionGUI:
         # visualizer = Visualizer()
         # visualizer.visualize(colors)
 
-        self.test_img({"input": colors})
+        self.__test_img({"input": colors})
 
-    def test_img(self, testData):
+    def __test_img(self, testData):
         result = self.network.test_single_digit(testData)
         self.digit_label["text"] = ("Folgende Ziffer wurde erkannt: %s | Wahrscheinlichkeit: %s" % (result[0], result[1]))
 
-    def paint(self, event):
+    def __paint(self, event):
         python_green = "#000000"
         x1, y1 = (event.x - 2), (event.y - 2)
         x2, y2 = (event.x + 2), (event.y + 2)
         self.canvas.create_rectangle(x1, y1, x2, y2, fill=python_green)
 
-    def reset(self):
+    def __reset(self):
         self.canvas.delete("all")
         self.digit_label["text"] = ""
 
@@ -262,19 +287,19 @@ class digitRecognitionGUI:
 
         self.__create_overview_layout()
 
-
-    def load_matrix(self):
+    def __load_matrix(self):
         file = filedialog.askopenfilename(title="Weight Matrix laden (*.np Datei)")
+
         self.weight_matrix = np.load(file)
         self.network = NeuronalNetwork(
-            layers=[784, 40, 10],
+            layers=[784, int(self.neuron_number_input.get()), 10],
             weight_matrix=self.weight_matrix,
-            fnc_activate_type="log"
+            fnc_activate_type=self.alg_var.get()
         )
         str, data = self.network.test(self.testData)
 
         self.overview_data = data
-        self.__create_overview_layout()
+        self.__create_tabs()
 
     @staticmethod
     def __vector_to_digit(vector):
