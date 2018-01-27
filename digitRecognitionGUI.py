@@ -4,10 +4,9 @@ import numpy as np
 from helpers.csvImporter import CSVImporter
 from matplotlib import pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
-from matplotlib import colors
 from tkinter import ttk
 from tkinter import *
-from neuronalNetwork.neuronalNetwork import NeuronalNetwork
+from neuronalNetwork.neuronalNetwork2 import NeuronalNetwork
 
 
 class digitRecognitionGUI:
@@ -18,7 +17,7 @@ class digitRecognitionGUI:
 
         # Load the test Data from a csv File
         importer = CSVImporter()
-        self.testData = importer.import_training_file("ressources/test.csv")
+        self.testData = importer.import_file("ressources/test.csv")
 
         # Config
         self.minProb = 0
@@ -288,15 +287,16 @@ class digitRecognitionGUI:
         self.__create_overview_layout()
 
     def __load_matrix(self):
-        file = filedialog.askopenfilename(title="Weight Matrix laden (*.np Datei)")
+        file = filedialog.askopenfilename(title="Weight Matrix laden (*.npy Datei)")
 
         self.weight_matrix = np.load(file)
+
         self.network = NeuronalNetwork(
             layers=[784, int(self.neuron_number_input.get()), 10],
             weight_matrix=self.weight_matrix,
             fnc_activate_type=self.alg_var.get()
         )
-        str, data = self.network.test(self.testData)
+        data = self.network.test(self.testData)
 
         self.overview_data = data
         self.__create_tabs()

@@ -1,11 +1,11 @@
 import numpy as np
 import sys
-from random import randint
+
 
 class NeuronalNetwork:
-
     def __init__(self, layers, weight_matrix=None, fnc_propagate_type=None, fnc_activate_type=None, fnc_learn_type="BP",
-                 fnc_output_type=None, treshold=None, learn_rate=None, rnd_values_low=-1.0, rnd_values_high=1.0, number_epochs=1):
+                 fnc_output_type=None, treshold=None, learn_rate=None, rnd_values_low=-1.0, rnd_values_high=1.0,
+                 number_epochs=1):
 
         """
         Inits a new Neuronal Network.
@@ -17,7 +17,7 @@ class NeuronalNetwork:
         self.numLayers = len(layers)
         self.numNeurons = sum(layers)
         self.numInputNeurons = layers[0]
-        self.numOutputNeurons = layers[self.numLayers-1]
+        self.numOutputNeurons = layers[self.numLayers - 1]
         self.numHiddenNeurons = layers[1]
         self.learnRate = learn_rate
         self.treshold = treshold
@@ -27,7 +27,7 @@ class NeuronalNetwork:
         self.fnc_propagate_type = fnc_propagate_type
         self.fnc_activate_type = fnc_activate_type
         self.fnc_output_type = fnc_output_type
-        self.fnc_learn_type = fnc_learn_type #BP, ERS, ERS2
+        self.fnc_learn_type = fnc_learn_type  # BP, ERS, ERS2
 
         # Set the functions to default values if no other values are provided
         self.fnc_propagate_type = "netto_input" if fnc_propagate_type is None else fnc_propagate_type
@@ -51,7 +51,6 @@ class NeuronalNetwork:
                     self.weight_matrix[hiddenIdx][outIdx] = rng[0]
         else:
             self.weight_matrix = weight_matrix
-
 
         # If self.weight_matrix changes, self._tempWeightMatrix also changes, but not the other way around!
         # Thus we don't need to update self._tempWeightMatrix after each step, as we already update self.weight_matrix
@@ -110,9 +109,7 @@ class NeuronalNetwork:
                             if self.output[index] != output_vector[index]:
                                 increase_error = True
                         else:
-                            self.output[index] =self.neurons[k]
-
-
+                            self.output[index] = self.neurons[k]
 
                     # Change weight matrix
                     self.__fnc_learn(output_vector)
@@ -123,9 +120,9 @@ class NeuronalNetwork:
                         f.write("Weight Matrix after %s Iterations:\n" % (i))
                         f.write(str(self.weight_matrix))
                         f.write("\nError Sum: ")
-                        f.write(str(error_sum/100))
+                        f.write(str(error_sum / 100))
                         print("Iteration %s/%s in epoch:%s/%s " % (i, len(training_data), j, self.epochs - 1))
-                        print("Wrong classifications in the last 100 iterations: " + str(error_sum/100))
+                        print("Wrong classifications in the last 100 iterations: " + str(error_sum / 100))
                         f.write("\n\n")
 
                         error_sum = 0
@@ -166,7 +163,8 @@ class NeuronalNetwork:
                 # Calculate output neurons with treshold
                 if k >= (self.numHiddenNeurons + self.numInputNeurons):
                     if self.treshold is not None:
-                        self.output[k - self.numHiddenNeurons - self.numInputNeurons] = 1 if self.neurons[k] > self.treshold else 0
+                        self.output[k - self.numHiddenNeurons - self.numInputNeurons] = 1 if self.neurons[
+                                                                                                 k] > self.treshold else 0
                     else:
                         self.output[k - self.numHiddenNeurons - self.numInputNeurons] = self.neurons[k]
 
@@ -194,7 +192,7 @@ class NeuronalNetwork:
             result.append(np.amax(self.__softmax(self.output)))
             result_overview.append(result)
 
-        percent = count/len(test_data)
+        percent = count / len(test_data)
         resultStr += "%s wurden erfolgreich erkannt" % (percent)
 
         f_final = open("test_results.txt", "w")
@@ -262,11 +260,14 @@ class NeuronalNetwork:
                 if weight_col[i] != 0:
 
                     if self.fnc_learn_type == "BP":
-                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * self.delta[activation_index] * self.neurons[i]
+                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * self.delta[
+                            activation_index] * self.neurons[i]
                     elif self.fnc_learn_type == "ERS":
-                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * abs(1 - abs(weight_col[i])) * self.delta[activation_index] * self.__sgn(self.neurons[i])
+                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * abs(
+                            1 - abs(weight_col[i])) * self.delta[activation_index] * self.__sgn(self.neurons[i])
                     elif self.fnc_learn_type == "ERS2":
-                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * abs(1 - abs(weight_col[i])) * self.delta[activation_index] * self.neurons[i]
+                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * abs(
+                            1 - abs(weight_col[i])) * self.delta[activation_index] * self.neurons[i]
 
     def __fnc_learn_hidden(self):
 
@@ -295,11 +296,14 @@ class NeuronalNetwork:
                 if weight_col[i] != 0:
 
                     if self.fnc_learn_type == "BP":
-                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * self.delta[activation_index] * self.neurons[i]
+                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * self.delta[
+                            activation_index] * self.neurons[i]
                     elif self.fnc_learn_type == "ERS":
-                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * abs(1 - abs(weight_col[i])) * self.delta[activation_index] * self.__sgn(self.neurons[i])
+                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * abs(
+                            1 - abs(weight_col[i])) * self.delta[activation_index] * self.__sgn(self.neurons[i])
                     elif self.fnc_learn_type == "ERS2":
-                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * abs(1 - abs(weight_col[i])) * self.delta[activation_index] * self.neurons[i]
+                        self._tempWeightMatrix[i][activation_index] = weight_col[i] - self.learnRate * abs(
+                            1 - abs(weight_col[i])) * self.delta[activation_index] * self.neurons[i]
 
     @staticmethod
     def __calculate_error(target, output):
