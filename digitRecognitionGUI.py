@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg, NavigationToolbar2TkAgg
 from tkinter import ttk
 from tkinter import *
-from neuronalNetwork.neuronalNetwork2 import NeuronalNetwork
+from neuronalNetwork.NeuralNetwork import NeuralNetwork
 
 
 class digitRecognitionGUI:
@@ -112,7 +112,7 @@ class digitRecognitionGUI:
 
         index = 0
         for item in self.testData:
-            str = "%s - (Wert: %s)" % (index, self.__vector_to_digit(item["output"]))
+            str = "%s - (Wert: %s)" % (index, self.__vector_to_digit(item[-10:]))
             data_list.insert(END, str)
             index += 1
 
@@ -161,6 +161,7 @@ class digitRecognitionGUI:
         correct_classification = 0
         sums = np.zeros((10, 1))
         sums_correct = np.zeros((10, 1))
+
         for i in range(len(self.overview_data)):
 
             if self.overview_data[i][0] >= 0 and self.overview_data[i][1] >= 0 and self.overview_data[i][0] < 10 and self.overview_data[i][1] < 10 and self.overview_data[i][2] >= self.minProb:
@@ -221,8 +222,8 @@ class digitRecognitionGUI:
         string_parts = value.split(" ")
 
         # Test the data
-        result = self.network.test_single_digit(self.testData[int(float(string_parts[0]))])
-        self.__visualize(data=self.testData[int(float(string_parts[0]))]["input"], result=result)
+        result = self.network.predict(self.testData[int(float(string_parts[0]))])
+        self.__visualize(data=self.testData[int(float(string_parts[0]))][:-10], result=[np.argmax(result), np.amax(result)])
 
     def __visualize(self, data, result):
 
@@ -242,7 +243,7 @@ class digitRecognitionGUI:
         self.canvas_visualizer.get_tk_widget().pack(side=TOP, fill=BOTH, expand=True)
 
         # Add button and result label
-        self.result_str.set("Ergebnis: %s | Wahrscheinlichkeit: %s" % (result[0], result[1]))
+        self.result_str.set("Ergebnis: %s | Wahrscheinlichkeit: %s" % (result[0], result[2]))
         self.rightFrame_visualizer.pack()
 
         self.frame_visualizer.update_idletasks()
@@ -260,11 +261,11 @@ class digitRecognitionGUI:
         # visualizer = Visualizer()
         # visualizer.visualize(colors)
 
-        self.__test_img({"input": colors})
+        self.__test_img(colors)
 
     def __test_img(self, testData):
-        result = self.network.test_single_digit(testData)
-        self.digit_label["text"] = ("Folgende Ziffer wurde erkannt: %s | Wahrscheinlichkeit: %s" % (result[0], result[1]))
+        result = self.network.predict(testData)
+        self.digit_label["text"] = ("Folgende Ziffer wurde erkannt: %s | Wahrscheinlichkeit: %s" % (np.argmax(result), np.amax(result)))
 
     def __paint(self, event):
         python_green = "#000000"
@@ -291,12 +292,12 @@ class digitRecognitionGUI:
 
         self.weight_matrix = np.load(file)
 
-        self.network = NeuronalNetwork(
+        self.network = NeuralNetwork(
             layers=[784, int(self.neuron_number_input.get()), 10],
             weight_matrix=self.weight_matrix,
             fnc_activate_type=self.alg_var.get()
         )
-        data = self.network.test(self.testData)
+        data, _ = self.network.test(self.testData)
 
         self.overview_data = data
         self.__create_tabs()

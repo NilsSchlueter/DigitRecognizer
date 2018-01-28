@@ -1,0 +1,62 @@
+===== Learn FNC: BP | Activation FNC: log | Learn Rate: 0.2 | Hidden Neurons: 20 =====
+Correct classifications: 682 / 806
+
+===== Learn FNC: BP | Activation FNC: log | Learn Rate: 0.2 | Hidden Neurons: 40 =====
+Correct classifications: 689 / 806
+
+===== Learn FNC: BP | Activation FNC: log | Learn Rate: 0.2 | Hidden Neurons: 60 =====
+Correct classifications: 714 / 806
+
+===== Learn FNC: BP | Activation FNC: log | Learn Rate: 0.3 | Hidden Neurons: 20 =====
+Correct classifications: 683 / 806
+
+===== Learn FNC: BP | Activation FNC: log | Learn Rate: 0.3 | Hidden Neurons: 40 =====
+Correct classifications: 691 / 806
+
+===== Learn FNC: BP | Activation FNC: log | Learn Rate: 0.3 | Hidden Neurons: 60 =====
+Correct classifications: 713 / 806
+
+===== Learn FNC: BP | Activation FNC: log | Learn Rate: 0.4 | Hidden Neurons: 20 =====
+Correct classifications: 640 / 806
+
+===== Learn FNC: BP | Activation FNC: log | Learn Rate: 0.4 | Hidden Neurons: 40 =====
+Correct classifications: 672 / 806
+
+===== Learn FNC: BP | Activation FNC: log | Learn Rate: 0.4 | Hidden Neurons: 60 =====
+Correct classifications: 719 / 806
+
+===== Learn FNC: BP | Activation FNC: log | Learn Rate: 0.5 | Hidden Neurons: 20 =====
+Correct classifications: 664 / 806
+
+===== Learn FNC: BP | Activation FNC: log | Learn Rate: 0.5 | Hidden Neurons: 40 =====
+Correct classifications: 676 / 806
+
+===== Learn FNC: BP | Activation FNC: log | Learn Rate: 0.5 | Hidden Neurons: 60 =====
+Correct classifications: 703 / 806
+
+===== Learn FNC: BP | Activation FNC: log | Learn Rate: 0.6 | Hidden Neurons: 20 =====
+Correct classifications: 644 / 806
+
+===== Learn FNC: BP | Activation FNC: log | Learn Rate: 0.6 | Hidden Neurons: 40 =====
+Correct classifications: 696 / 806
+
+===== Learn FNC: BP | Activation FNC: log | Learn Rate: 0.6 | Hidden Neurons: 60 =====
+Correct classifications: 714 / 806
+
+===== Learn FNC: BP | Activation FNC: log | Learn Rate: 0.7 | Hidden Neurons: 20 =====
+Correct classifications: 644 / 806
+
+===== Learn FNC: BP | Activation FNC: log | Learn Rate: 0.7 | Hidden Neurons: 40 =====
+Correct classifications: 691 / 806
+
+===== Learn FNC: BP | Activation FNC: log | Learn Rate: 0.7 | Hidden Neurons: 60 =====
+Correct classifications: 715 / 806
+
+===== Learn FNC: BP | Activation FNC: log | Learn Rate: 0.8 | Hidden Neurons: 20 =====
+Correct classifications: 609 / 806
+
+===== Learn FNC: BP | Activation FNC: log | Learn Rate: 0.8 | Hidden Neurons: 40 =====
+Correct classifications: 663 / 806
+
+===== Learn FNC: BP | Activation FNC: log | Learn Rate: 0.8 | Hidden Neurons: 60 =====
+Correct classifications: 712 / 806

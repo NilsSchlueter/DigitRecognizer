@@ -30,7 +30,10 @@ class CSVImporter:
 
     @staticmethod
     def __normalize(value):
-        return float((value - 128) / 128)
+        if value == 0:
+            return 0
+        else:
+            return 1
 
     @staticmethod
     def __transform_to_binary(number):
