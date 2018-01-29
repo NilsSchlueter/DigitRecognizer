@@ -21,7 +21,7 @@ class NetworkComparer:
 
                 print("Now testing with learn rate: %s and layers: %s\n" % (cur_learn_rate, cur_layers))
 
-                cur_network = NeuronalNetwork(
+                cur_network = NeuralNetwork(
                     layers=cur_layers,
                     learn_rate=cur_learn_rate,
                     fnc_activate_type=data["fnc_activate_type"],
