@@ -72,7 +72,7 @@ class NeuralNetwork:
                 self.__calc_errors(output_vector)
                 self.__update_weights(row)
 
-                if data_count % 100 == 0:
+                if data_count % 1000 == 0:
                     print("-- data: %d / %d" % (data_count, len(training_data)))
 
             print('finished epoch=%d / %d, learn rate=%.3f, error=%.3f' % (epoch + 1, self.epochs, self.learnRate, sum_error))

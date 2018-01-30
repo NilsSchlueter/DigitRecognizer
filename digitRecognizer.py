@@ -35,17 +35,17 @@ comparer = NetworkComparer(data, trainingData1, testData)
 comparer.compare_networks()
 
 '''
-# m = np.load("weight_matrix_final.npy")
+# m = np.load("ers2_100_log_85perc.npy")
 
 network2 = NeuralNetwork(
-    layers=[784, 80, 10],
+    layers=[784, 100, 10],
     fnc_activate_type="log",
-    learn_rate=0.04,
-    fnc_learn_type="ERS",
+    learn_rate=0.02,
+    fnc_learn_type="ERS2",
     rnd_values_low=-1,
     rnd_values_high=1,
-    number_epochs=3,
+    number_epochs=2,
     weight_matrix=None
 )
 network2.train(training_data=trainingData)
-network2.test(trainingData1, print_results=True)
+network2.test(testData, print_results=True)
