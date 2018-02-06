@@ -30,12 +30,16 @@ class NeuralNetwork:
         # Init weights
         self.network_data = list()
 
+        # Generate a new weight matrix if there is no weight matrix given
         if weight_matrix is None:
-            hidden_layer = [{'weights': [random.uniform(rnd_values_low, rnd_values_high) for i in range(self.numInputNeurons)]} for i in range(self.numHiddenNeurons)]
-            self.network_data.append(hidden_layer)
 
-            output_layer = [{'weights': [random.uniform(rnd_values_low, rnd_values_high) for i in range(self.numHiddenNeurons)]} for i in range(self.numOutputNeurons)]
-            self.network_data.append(output_layer)
+            for i in range(len(layers[1:])):
+                nb_neurons_cur_layer = layers[i + 1]
+                nb_neurons_prev_layer = layers[i]
+                layer = [{'weights': [random.uniform(rnd_values_low, rnd_values_high) for i in range(nb_neurons_prev_layer)]} for i in range(nb_neurons_cur_layer)]
+                self.network_data.append(layer)
+
+        # Load the given weights into the data structure
         else:
 
             neuron_data = []
@@ -72,6 +76,7 @@ class NeuralNetwork:
                 self.__calc_errors(output_vector)
                 self.__update_weights(row)
 
+                # Print to show progress
                 if data_count % 1000 == 0:
                     print("-- data: %d / %d" % (data_count, len(training_data)))
 
@@ -84,6 +89,8 @@ class NeuralNetwork:
 
         f = None
         result_str = ""
+
+        # Write to file for debug purposes
         if print_results:
             f = open("test_results.txt", "w")
             f.write("===== Learn FNC: %s | Activation FNC: %s | Learn Rate: %s | Hidden Neurons: %s =====\n" % (self.fnc_learn_type, self.fnc_activate_type, self.learnRate, self.numHiddenNeurons))
@@ -112,12 +119,10 @@ class NeuralNetwork:
             row_result.append(np.amax(probs))  # calculate Probability
             result.append(row_result)
 
-            '''
-            if f: 
+            if f:
                 res_row = 'prediction: %s, actual: %s\n' % (prediction, row[self.numInputNeurons:])
                 f.write(res_row)
                 result_str += res_row
-            '''
 
         if f:
             cor_class = 'Correct classifications: %d / %d\n\n' % (correct_classifications, len(test_data))
@@ -283,4 +288,3 @@ class NeuralNetwork:
     @staticmethod
     def __softmax(data):
         return np.exp(data) / np.sum(np.exp(data))
-

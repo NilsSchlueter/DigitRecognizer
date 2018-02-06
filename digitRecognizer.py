@@ -9,7 +9,7 @@ trainingData = csvImporter.import_file("ressources/train.csv")
 testData = csvImporter.import_file("ressources/test.csv")
 
 # Create simple training and test data
-trainingData1 = trainingData[:1000]
+trainingData1 = trainingData[:100]
 testData1 = trainingData[2000:3500]
 
 # create network
@@ -38,13 +38,13 @@ comparer.compare_networks()
 # m = np.load("ers2_100_log_85perc.npy")
 
 network2 = NeuralNetwork(
-    layers=[784, 100, 10],
+    layers=[784, 60, 10],
     fnc_activate_type="log",
-    learn_rate=0.02,
-    fnc_learn_type="ERS2",
+    learn_rate=0.04,
+    fnc_learn_type="ERS",
     rnd_values_low=-1,
     rnd_values_high=1,
-    number_epochs=2,
+    number_epochs=1,
     weight_matrix=None
 )
 network2.train(training_data=trainingData)

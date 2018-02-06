@@ -15,12 +15,12 @@ testData = [
 
 # m = np.load("neuneuneu.npy")
 
-network = NeuronalNetwork(
-    layers=[2, 3, 1],
+network = NeuralNetwork(
+    layers=[2, 3, 3, 1],
     fnc_learn_type="BP",
     fnc_activate_type="log",
     weight_matrix=None,
-    learn_rate=0.3,
+    learn_rate=0.7,
     rnd_values_low=-1,
     rnd_values_high=1,
     number_epochs=10000

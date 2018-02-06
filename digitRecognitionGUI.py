@@ -10,7 +10,6 @@ from neuronalNetwork.NeuralNetwork import NeuralNetwork
 
 
 class digitRecognitionGUI:
-
     def __init__(self, master):
         self.master = master
         master.minsize(width=800, height=800)
@@ -53,7 +52,6 @@ class digitRecognitionGUI:
         self.init_frame.pack()
 
     def __create_tabs(self):
-        print("Creating tbaas")
         self.init_frame.destroy()
 
         # Create tabbed layout
@@ -177,11 +175,9 @@ class digitRecognitionGUI:
             else:
                 no_classification += 1
 
-        str_result = "Richtig klassifiziert (alle Daten): %s von %s (%s%%) \n Richtig klassifiziert (nur klassifizierte): %s von %s (%s%%) \n Nicht klassifiziert: %s" \
+        str_result = "Richtig klassifiziert (alle Daten): %s von %s (%s%%) \n Nicht klassifiziert: %s" \
                      % (correct_classification, len(self.overview_data),
                         (correct_classification / len(self.overview_data)) * 100,
-                        correct_classification, len(self.overview_data) - no_classification,
-                        0 if len(self.overview_data) - no_classification == 0 else correct_classification / (len(self.overview_data) - no_classification),
                         no_classification)
 
         # Creating the figure
@@ -243,7 +239,7 @@ class digitRecognitionGUI:
         self.canvas_visualizer.get_tk_widget().pack(side=TOP, fill=BOTH, expand=True)
 
         # Add button and result label
-        self.result_str.set("Ergebnis: %s | Wahrscheinlichkeit: %s" % (result[0], result[2]))
+        self.result_str.set("Ergebnis: %s | Wert: %s " % (result[0], result[1]))
         self.rightFrame_visualizer.pack()
 
         self.frame_visualizer.update_idletasks()
@@ -265,7 +261,7 @@ class digitRecognitionGUI:
 
     def __test_img(self, testData):
         result = self.network.predict(testData)
-        self.digit_label["text"] = ("Folgende Ziffer wurde erkannt: %s | Wahrscheinlichkeit: %s" % (np.argmax(result), np.amax(result)))
+        self.digit_label["text"] = ("Folgende Ziffer wurde erkannt: %s | Wert: %s" % (np.argmax(result), np.amax(result)))
 
     def __paint(self, event):
         python_green = "#000000"
@@ -322,6 +318,7 @@ class digitRecognitionGUI:
                 return 1
 
         return 0
+
 
 root = Tk()
 
